@@ -1,369 +1,519 @@
 <!doctype html>
 <html lang="th">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบเช็คชื่อการพบกลุ่ม ศกร.ระดับตำบลสันติสุข (Face Scan)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&display=swap" rel="stylesheet">
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบเช็คชื่อการพบกลุ่ม ศกร.ระดับตำบลสันติสุข (Face Scan) </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&display=swap" rel="stylesheet">
+    <script src="/_sdk/element_sdk.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 
-   <style>
-    /* 2. ตั้งค่า Global CSS ให้ใช้ฟอนต์ Sarabun และปรับขนาดให้อ่านง่าย */
-    body, html {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      
-      /* ปรับฟอนต์หลัก */
-      font-family: 'Sarabun', sans-serif !important;
-      
-      /* --- ส่วนที่ปรับปรุงเพื่อให้อ่านง่าย --- */
-      font-size: 16px; /* ขนาดมาตรฐาน อ่านสบาย ไม่เล็กไป */
-      line-height: 1.6; /* เพิ่มช่องว่างระหว่างบรรทัดให้อ่านไม่ลายตา */
-      color: #333; /* สีดำเทา ช่วยลดความจ้าของแสงเมื่อเทียบกับสีดำสนิท (#000) */
-      -webkit-font-smoothing: antialiased; /* ทำให้ขอบตัวหนังสือดูนวลเนียนขึ้น */
-      -moz-osx-font-smoothing: grayscale;
-    }
+    <style>
+        /* 1. Global Setup and Sarabun Font */
+        :root {
+            --color-primary: #0D9488; /* Teal 600 */
+            --color-primary-dark: #0F766E; /* Teal 700 */
+            --color-success: #10B981; /* Emerald 600 */
+            --color-danger: #EF4444; /* Red 500 */
+            --color-bg-light: #F7F8FC; /* Very light, soft gray/blue */
+            --color-muted: #6B7280;
+        }
 
-    /* บังคับฟอนต์และขนาดใน Form Elements ให้เท่ากับ Body */
-    input, select, button, textarea, optgroup, option {
-      font-family: 'Sarabun', sans-serif !important;
-      font-size: 1rem !important; /* 16px */
-      line-height: 1.5 !important;
-    }
+        /* 2. Base Font Size Adjustment for better mobile scaling */
+        body, html {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Sarabun', sans-serif !important;
+            line-height: 1.6;
+            color: #1f2937;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: var(--color-bg-light); 
+            /* Base text size set to a slightly smaller 0.95rem */
+            font-size: 0.95rem; /* ~15.2px for better density */
+        }
 
-    /* แก้ไขคลาสของ Tailwind */
-    .font-sans, .font-serif, .font-mono {
-      font-family: 'Sarabun', sans-serif !important;
-    }
+        /* 3. Form Elements (Adjusted padding to be more compact) */
+        input, select, textarea {
+            padding-left: 1rem; /* px-4 */
+            padding-right: 1rem; /* px-4 */
+            padding-top: 0.5rem; /* py-2 */
+            padding-bottom: 0.5rem; /* py-2 */
+            font-size: 1rem; /* Adjust based on new base size */
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 1px;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.2);
+            border-color: var(--color-primary) !important;
+        }
 
-    /* --- Toast Notification --- */
-    .toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 16px 24px;
-      border-radius: 12px; /* เพิ่มความโค้งมนให้ดูนุ่มนวล */
-      color: white;
-      font-weight: 500;
-      font-size: 16px; /* บังคับขนาดตัวหนังสือ */
-      letter-spacing: 0.3px; /* เพิ่มระยะห่างตัวอักษรนิดหน่อย */
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* เพิ่มเงาให้อ่านง่ายแยกจากพื้นหลัง */
-      animation: slideIn 0.3s ease-out;
-      font-family: 'Sarabun', sans-serif !important;
-    }
-    .toast.success { background-color: #10b981; }
-    .toast.error { background-color: #ef4444; }
-    .toast.info { background-color: #3b82f6; }
+        /* 4. Main Tab Button (Soft/macOS Style) */
+        .main-tab-button {
+            background-color: #ffffff;
+            border: none;
+            color: #4b5563;
+            border-radius: 1rem;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), 0 0px 1px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0.75rem 1rem; /* Adjusted vertical padding for compactness */
+        }
 
-    @keyframes slideIn {
-      from { transform: translateX(400px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
+        .main-tab-button.active {
+            background-color: var(--color-primary); 
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(13, 148, 136, 0.4);
+            transform: translateY(-1px);
+        }
+        .main-tab-button:not(.active):hover {
+            background-color: #f0f3f5;
+            transform: translateY(-0.5px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07);
+        }
+        @media (max-width: 767px) {
+            .main-tab-button {
+                flex-basis: 100%;
+                font-size: 0.875rem; /* text-sm on mobile */
+            }
+        }
+        @media (min-width: 768px) {
+            .main-tab-button {
+                font-size: 1rem; /* text-base on desktop */
+            }
+        }
 
-    .loading-spinner {
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-top: 3px solid white;
-      border-radius: 50%;
-      width: 24px; /* ปรับให้ใหญ่ขึ้นเล็กน้อย */
-      height: 24px;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+        /* 5. Main Card/Panel (macOS/Soft UI Shadow & Rounded) */
+        .modern-card {
+            background-color: white;
+            border-radius: 2rem;
+            padding: 2rem; /* Reduced padding from 2.5rem */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 3px 10px rgba(0, 0, 0, 0.03); 
+        }
+        @media (max-width: 767px) {
+             .modern-card {
+                padding: 1.25rem; /* Reduced padding from 1.5rem */
+                border-radius: 1.5rem;
+            }
+        }
 
-    /* --- Modals --- */
-    .config-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      backdrop-filter: blur(4px); /* เพิ่ม Blur พื้นหลังให้ Modal เด่นและอ่านง่ายขึ้น */
-    }
-    .config-modal-content {
-      background: white;
-      padding: 32px;
-      border-radius: 16px; /* เพิ่มความโค้งมน */
-      max-width: 500px;
-      width: 90%;
-      font-size: 16px;
-      line-height: 1.6;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
+        /* 6. Other Custom Styles (Unchanged) */
+        .toast {
+            border-radius: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+            background: #ffffff;
+            color: #1f2937;
+            border: 1px solid #e5e7eb;
+            font-weight: 600;
+        }
+        .toast.success { border-left: 5px solid var(--color-success); }
+        .toast.error { border-left: 5px solid var(--color-danger); }
+        .toast.info { border-left: 5px solid #3b82f6; }
 
-    .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.85); /* พื้นหลังเข้มขึ้นนิดหน่อยเพื่อให้อักษรขาวอ่านง่าย */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 3000;
-      color: white;
-      font-size: 1.1rem; /* ตัวหนังสือ loading ใหญ่ขึ้นนิดหน่อย */
-      letter-spacing: 0.5px;
-    }
-    .loading-overlay .spinner {
-      border: 4px solid rgba(255, 255, 255, 0.3);
-      border-top: 4px solid white;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 24px;
-    }
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
+        }
+        .loading-overlay .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite; 
+            margin-bottom: 24px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-    .confirm-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2500;
-      animation: fadeIn 0.2s ease-out;
-      backdrop-filter: blur(2px);
-    }
-    .confirm-modal-content {
-      background: white;
-      padding: 32px;
-      border-radius: 16px;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      animation: slideUp 0.3s ease-out;
-      /* เพิ่มการจัดการตัวอักษรใน Modal */
-      text-align: center; 
-      font-size: 1.05rem;
-    }
+        .camera-container {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            border: 3px solid var(--color-primary);
+            box-shadow: 0 5px 15px rgba(13, 148, 136, 0.2);
+        }
+        .camera-container video, .camera-container canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
 
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+        .report-table tbody tr:nth-child(even) {
+            background-color: #fcfcfd;
+        }
+        .report-table tbody tr:hover {
+            background-color: #e5f7f5;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
 
-    .camera-container {
-      width: 100%;
-      aspect-ratio: 4/3;
-      background: #000;
-      border-radius: 12px; /* ปรับขอบมนให้เข้ากับธีม */
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .camera-container video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .camera-container canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-  </style>
+        .btn-shadow {
+             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+        }
+        .text-primary { color: var(--color-primary) !important; }
+        .bg-primary { background-color: var(--color-primary) !important; }
+        .hover\:bg-indigo-700:hover { background-color: var(--color-primary-dark) !important; }
+        .border-primary { border-color: var(--color-primary) !important; }
+        .bg-indigo-50\/70 { background-color: rgba(13, 148, 136, 0.05) !important; }
+        
+        .loading-spinner {
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            width: 1.25rem;
+            height: 1.25rem;
+            animation: spin 1s linear infinite;
+        }
 
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body><div id="loading-overlay" class="loading-overlay">
-   <div class="spinner"></div>
-   <p id="loading-text" class="text-4xl font-semibold">กำลังโหลด AI Models...</p>
-   <p id="loading-progress" class="text-4xl mt-2">0%</p>
-  </div><div id="config-modal" class="config-modal" style="display: none;">
-   <div class="config-modal-content">
-    <h2 class="text-2xl font-bold mb-4">ตั้งค่า Google Apps Script</h2>
-    <p class="mb-4 text-gray-600">กรุณาใส่ URL ของ Google Apps Script Web App</p><input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/AKfycbzcROiJNZ-5AQbDYbPs_l2-hoKurM5Cxpt_knt_ufYGp9jOfOGY9qlyMAdiMynmHAD7oA/exec" class="w-full px-4 py-2 border rounded-lg mb-4"> <button id="save-url-btn" class="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700"> บันทึก URL </button>
-    <p class="mt-4 text-sm text-gray-500">หมายเหตุ: URL ต้องลงท้ายด้วย /exec และตั้งค่า "Who has access" เป็น "Anyone"</p>
-   </div>
-  </div><div id="confirm-delete-modal" class="confirm-modal" style="display: none;">
-   <div class="confirm-modal-content">
-    <h2 class="text-2xl font-bold mb-4 text-center" style="color: #ef4444;">⚠️ ยืนยันการลบ</h2>
-    <p id="confirm-delete-message" class="mb-6 text-center text-gray-700 text-lg"></p>
-    <div class="flex gap-3"><button id="confirm-delete-cancel" class="flex-1 py-3 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition-colors"> ยกเลิก </button> <button id="confirm-delete-confirm" class="flex-1 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"> ลบ </button>
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#0D9488', // Teal 600 (New Primary)
+                        'success': '#059669', // Emerald 600
+                        'danger': '#DC2626', // Red 600
+                        'muted': '#6B7280', // Gray 500
+                        'bg-light': '#F7F8FC', // Soft background
+                    },
+                    borderRadius: {
+                        '2xl': '1.5rem', /* 24px */
+                        '3xl': '2rem', /* 32px */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>@view-transition { navigation: auto; }</style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script></head>
+<body class="bg-bg-light">
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p id="loading-text" class="text-2xl font-bold">กำลังโหลด AI Models...</p>
+        <p id="loading-progress" class="text-xl mt-4">0%</p>
     </div>
-   </div>
-  </div>
-  <div id="app" class="min-h-full p-6" style="display: none;">
-   <div class="max-w-6xl mx-auto">
-    <div class="flex justify-between items-center mb-8">
-     <h1 id="app-title" class="text-4xl font-bold">ระบบเช็คชื่อการพบกลุ่ม ศกร.ระดับตำบลสันติสุข (Face Scan)</h1><button id="change-url-btn" class="px-4 py-2 bg-gray-600 text-white rounded-lg text-sm hover:bg-gray-700"> เปลี่ยน URL </button>
-    </div><div class="flex gap-2 mb-6"><button id="main-tab-attendance" class="flex-1 py-8 px-6 rounded-lg font-semibold transition-colors text-2xl">✅ เช็คชื่อมาพบกลุ่ม</button> <button id="main-tab-register" class="flex-1 py-8 px-6 rounded-lg font-semibold transition-colors text-2xl">📝 บันทึกข้อมูลนักเรียน</button> <button id="main-tab-report" class="flex-1 py-8 px-6 rounded-lg font-semibold transition-colors text-2xl">📊 รายงานการพบกลุ่ม</button> <button id="main-tab-list" class="flex-1 py-8 px-6 rounded-lg font-semibold transition-colors text-2xl">👥 รายชื่อผู้เรียน</button> <button id="main-tab-rooms" class="flex-1 py-8 px-6 rounded-lg font-semibold transition-colors text-2xl">🏫 ตั้งค่าระดับการศึกษา</button>
-    </div><div id="attendance-section" class="hidden">
-     <div class="p-6 rounded-lg shadow-lg mb-6">
-      <h2 class="text-4xl font-semibold mb-4">เลือกระดับการศึกษา</h2><select id="attendance-room-select" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:outline-none text-2xl"> <option value="">-- เลือกระดับการศึกษา --</option> </select>
-     </div>
-     <div id="attendance-camera-section" class="hidden">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2 p-6 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold mb-4">กล้องตรวจจับใบหน้า</h2>
-        <div class="camera-container mb-4">
-         <video id="attendance-camera-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
-         <canvas id="attendance-camera-canvas" class="absolute top-0 left-0 w-full h-full pointer-events-none text-xl "></canvas>
+
+    <div id="config-modal" class="config-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" style="display: none;">
+        <div class="modern-card max-w-lg w-full">
+            <h2 class="text-2xl font-extrabold mb-4 text-primary">ตั้งค่า Google Apps Script</h2>
+            <p class="mb-4 text-gray-700 text-base">กรุณาใส่ **URL Web App** ที่ท่าน Deploy จาก Google Apps Script</p>
+            <input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-4 py-2 border border-gray-300 rounded-xl mb-4 text-base">
+            <button id="save-url-btn" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors text-lg btn-shadow">
+                💾 บันทึก URL
+            </button>
+            <p class="mt-4 text-sm text-gray-500">URL ต้องลงท้ายด้วย /exec และต้องตั้งค่า "Who has access" เป็น "Anyone"</p>
         </div>
-        <div id="attendance-summary" class="px-6 py-8 rounded-lg font-bold text-center text-2xl shadow-lg mb-4" style="background-color: rgba(16, 185, 129, 0.95); color: white;"><span id="attendance-count">พบ 0 คน</span>
-        </div>
-        <div class="flex gap-2">
-            <button id="start-attendance-camera-btn" class="flex-1 py-8 rounded-lg font-semibold transition-colors text-2xl"> เปิดกล้อง </button> 
-            <button id="switch-attendance-camera-btn" class="py-8 px-6 rounded-lg font-semibold transition-colors hidden text-2xl"> 🔄 สลับกล้อง </button> 
-            <button id="toggle-sound-btn" class="py-8 px-6 rounded-lg font-semibold transition-colors hidden text-2xl bg-blue-500 text-white"> 🔊 เสียง: เปิด </button>
-            
-            <button id="stop-attendance-camera-btn" class="flex-1 py-8 rounded-lg font-semibold transition-colors hidden text-2xl"> ปิดกล้อง </button>
-        </div>
-       </div><div class="p-6 rounded-lg shadow-lg">
-        <h2 class="text-4xl font-semibold mb-4">รายชื่อที่ตรวจพบ(<span id="face-count-detect">0</span>)</h2>
-        <div id="detected-list" class="space-y-2 mb-4 max-h-96 overflow-y-auto">
-         <p class="text-center py-8 opacity-60 text-2xl">ยังไม่มีรายชื่อ</p>
-        </div><button id="save-attendance-btn" class="w-full py-8 rounded-lg font-semibold transition-colors text-2xl" disabled> <span id="save-attendance-text">💾 บันทึกการพบกลุ่ม</span>
-         <div id="save-attendance-loading" class="loading-spinner mx-auto hidden"></div></button>
-       </div>
-      </div>
-     </div>
-    </div><div id="register-section" class="hidden">
-     <div class="p-6 rounded-lg shadow-lg mb-6">
-      <h2 class="text-2xl font-semibold mb-4">บันทึกข้อมูลผู้เรียนใหม่</h2><div class="flex gap-2 mb-4"><button id="register-tab-upload" class="flex-1 py-8 px-6 rounded-lg font-semibold transition-colors text-4xl">อัปโหลดรูป</button> <button id="register-tab-camera" class="flex-1 py-8 px-6 rounded-lg font-semibold transition-colors text-4xl">ใช้กล้อง</button>
-      </div><div id="register-upload-section">
-       <form id="add-face-form" class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-         <div><label for="person-name" class="block text-2xl font-medium mb-2">ชื่อ-นามสกุล</label> <input type="text" id="person-name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none">
-         </div>
-         <div><label for="student-room" class="block text-2xl font-medium mb-2">ระดับการศึกษา</label> <select id="student-room" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none text-2xl"> <option value="">เลือกระดับการศึกษา</option> </select>
-         </div>
-        </div>
-        <div><label for="face-image" class="block text-4xl font-medium mb-2">อัปโหลดรูปภาพ</label> <input type="file" id="face-image" accept="image/*" required class="w-full px-4 py-2 border rounded-lg">
-        </div>
-        <div id="preview-container" class="hidden"><img id="image-preview" class="w-full h-48 object-cover rounded-lg">
-        </div><button type="submit" id="add-button" class="w-full py-8 rounded-lg font-semibold transition-colors text-4xl"> <span id="add-button-text">บันทึกข้อมูลนักเรียน</span>
-         <div id="add-loading" class="loading-spinner mx-auto hidden"></div></button>
-       </form>
-      </div><div id="register-camera-section" class="hidden space-y-4">
-       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div><label for="camera-person-name" class="block text-4xl font-medium mb-2">ชื่อ-นามสกุล</label> <input type="text" id="camera-person-name" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none">
-        </div>
-        <div><label for="camera-student-room" class="block text-4xl font-medium mb-2">ระดับการศึกษา</label> <select id="camera-student-room" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none text-2xl"> <option value="">เลือกระดับการศึกษา</option> </select>
-        </div>
-       </div>
-       <div class="camera-container">
-        <video id="register-camera-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
-        <canvas id="register-camera-canvas" class="absolute top-0 left-0 w-full h-full pointer-events-none"></canvas>
-       </div>
-       <div class="flex gap-2"><button id="start-register-camera-btn" class="flex-1 py-3 rounded-lg font-semibold transition-colors text-4xl"> เปิดกล้อง </button> <button id="switch-register-camera-btn" class="py-3 px-4 rounded-lg font-semibold transition-colors hidden text-4xl"> 🔄 สลับกล้อง </button> <button id="capture-register-btn" class="flex-1 py-3 rounded-lg font-semibold transition-colors hidden text-4xl"> 📸 ถ่ายภาพ </button> <button id="save-register-btn" class="flex-1 py-3 rounded-lg font-semibold transition-colors hidden text-4xl"> 💾 บันทึก </button>
-       </div>
-       <canvas id="captured-image-canvas" class="w-full rounded-lg hidden" style="aspect-ratio: 4/3; object-fit: cover;"></canvas>
-      </div>
-     </div>
-    </div><div id="report-section" class="hidden">
-     <div class="p-6 rounded-lg shadow-lg mb-6">
-      <h2 class="text-2xl font-semibold mb-4">เลือกเงื่อนไขรายงาน</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-       <div><label for="report-room-select" class="block text-xl font-medium mb-2">ระดับการศึกษา</label> <select id="report-room-select" class="w-full px-4 py-8 border rounded-lg focus:ring-2 focus:outline-none text-lg"> <option value="">-- เลือกระดับการศึกษา --</option> </select>
-       </div>
-       <div><label for="report-start-date" class="block text-xl font-medium mb-2">วันที่เริ่มต้น</label> <input type="date" id="report-start-date" class="w-full px-4 py-8 border rounded-lg focus:ring-2 focus:outline-none">
-       </div>
-       <div><label for="report-end-date" class="block text-xl font-medium mb-2">วันที่สิ้นสุด</label> <input type="date" id="report-end-date" class="w-full px-4 py-8 border rounded-lg focus:ring-2 focus:outline-none">
-       </div>
-      </div><button id="load-report-btn" class="w-full py-8 rounded-lg font-bold text-lg transition-colors shadow-lg hover:shadow-xl text-2xl"> <span id="load-report-text">🔍 ดูรายงานการพบกลุ่ม</span>
-       <div id="load-report-loading" class="loading-spinner mx-auto hidden"></div></button>
-     </div>
-     <div id="report-results" class="hidden">
-      <div class="p-6 rounded-lg shadow-lg mb-6">
-       <h2 class="text-2xl font-semibold mb-4">สรุปผลการพบกลุ่ม</h2>
-       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="p-4 rounded-lg text-center" style="background-color: rgba(59, 130, 246, 0.1);">
-         <p class="text-sm opacity-70">ผู้เรียนทุกระดับ</p>
-         <p id="total-students" class="text-3xl font-bold mt-2">0</p>
-        </div>
-        <div class="p-4 rounded-lg text-center" style="background-color: rgba(16, 185, 129, 0.1);">
-         <p class="text-sm opacity-70">มาพบกลุ่ม</p>
-         <p id="attended-students" class="text-3xl font-bold mt-2" style="color: #10b981;">0</p>
-        </div>
-        <div class="p-4 rounded-lg text-center" style="background-color: rgba(239, 68, 68, 0.1);">
-         <p class="text-sm opacity-70">ไม่มาพบกลุ่ม</p>
-         <p id="absent-students" class="text-3xl font-bold mt-2" style="color: #ef4444;">0</p>
-        </div>
-       </div>
-      </div>
-      <div class="p-6 rounded-lg shadow-lg mb-6">
-       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">รายละเอียดการมาพบกลุ่ม</h2>
-        <div class="flex gap-2"><button id="export-excel-btn" class="px-6 py-3 rounded-lg font-bold transition-colors shadow-md hover:shadow-lg" style="background-color: #10b981; color: white;"> 📥 ส่งออก Excel </button> <button id="delete-attendance-btn" class="px-6 py-3 rounded-lg font-bold transition-colors shadow-md hover:shadow-lg" style="background-color: #ef4444; color: white;"> 🗑️ ลบข้อมูล </button>
-        </div>
-       </div>
-       <div class="overflow-x-auto">
-        <table id="report-table" class="w-full border-collapse">
-         <thead>
-          <tr style="background-color: rgba(59, 130, 246, 0.1);">
-           <th class="border px-4 py-3 text-left">ลำดับ</th>
-           <th class="border px-4 py-3 text-left">ชื่อ-นามสกุล</th>
-           <th class="border px-4 py-3 text-left">ระดับการศึกษา</th>
-           <th class="border px-4 py-3 text-center">สถานะ</th>
-           <th class="border px-4 py-3 text-center">วันที่</th>
-           <th class="border px-4 py-3 text-center">เวลา</th>
-          </tr>
-         </thead>
-         <tbody id="report-table-body">
-         </tbody>
-        </table>
-       </div>
-      </div>
-     </div>
-    </div><div id="list-section" class="hidden">
-     <div class="p-6 rounded-lg shadow-lg mb-6">
-      <h2 class="text-4xl font-semibold mb-4">กรองรายชื่อ</h2><select id="list-room-filter" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:outline-none text-4xl"> <option value="">ทุกระดับชั้น</option> </select>
-     </div>
-     <div class="p-6 rounded-lg shadow-lg">
-      <h2 class="text-2xl font-semibold mb-4">รายชื่อผู้เรียน (<span id="face-count">0</span>)</h2>
-      <div id="faces-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-       <p class="col-span-full text-center py-8 opacity-60 text-2xl">กำลังโหลดข้อมูล...</p>
-      </div>
-     </div>
-    </div><div id="rooms-section" class="hidden">
-     <div class="p-6 rounded-lg shadow-lg mb-6">
-      <h2 class="text-4xl font-semibold mb-4">เพิ่มระดับการศึกษาใหม่</h2>
-      <form id="add-room-form" class="space-y-4">
-       <div><label for="new-room-name" class="block text-2xl font-medium mb-2">ชื่อระดับการศึกษา</label> <input type="text" id="new-room-name" required placeholder="เช่น: การเขียนโปรแกรม ม.2/1" class="w-full px-8 py-2 border rounded-lg focus:ring-2 focus:outline-none">
-       </div><button type="submit" id="add-room-button" class="w-full py-8 rounded-lg font-semibold transition-colors text-2xl"> <span id="add-room-button-text">➕ เพิ่มระดับการศึกษา</span>
-        <div id="add-room-loading" class="loading-spinner mx-auto hidden"></div></button>
-      </form>
-     </div>
-     <div class="p-6 rounded-lg shadow-lg">
-      <h2 class="text-4xl font-semibold mb-4">รายชื่อระดับการศึกษา (<span id="room-count">0</span>)</h2>
-      <div id="rooms-list" class="space-y-2">
-       <p class="text-center py-8 opacity-60 text-xl">กำลังโหลดข้อมูล...</p>
-      </div>
-     </div>
     </div>
-   </div>
-  </div>
+
+    <div id="confirm-delete-modal" class="confirm-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" style="display: none;">
+        <div class="modern-card max-w-sm w-full">
+             <h2 class="text-2xl font-extrabold mb-4 text-danger text-center">⚠️ ยืนยันการลบ</h2>
+             <p id="confirm-delete-message" class="mb-6 text-center text-gray-700 text-lg font-medium"></p>
+            <div class="flex gap-4">
+                 <button id="confirm-delete-cancel" class="flex-1 py-3 bg-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-400 transition-colors text-lg">
+                    ยกเลิก
+                </button>
+                 <button id="confirm-delete-confirm" class="flex-1 py-3 bg-danger text-white rounded-xl font-bold hover:bg-red-700 transition-colors text-lg btn-shadow">
+                    🔥 ลบ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app" class="min-h-full p-4 md:p-6 lg:p-8" style="display: none;">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                <h1 id="app-title" class="text-2xl lg:text-3xl font-extrabold text-primary mb-4 md:mb-0">
+                    <span class="text-muted">ระบบเช็คชื่อ</span> ศกร.ตำบลสันติสุข 
+                    <span class="text-xl lg:text-2xl text-gray-500">(Face Scan)</span>
+                </h1>
+                <button id="change-url-btn" class="px-5 py-2 bg-muted text-white rounded-xl text-base hover:bg-gray-700 transition-colors btn-shadow">
+                    ⚙️ ตั้งค่า Apps Script
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
+                <button id="main-tab-attendance" class="main-tab-button active py-3 px-3 font-bold text-sm md:text-base">
+                    ✅ เช็คชื่อมาพบกลุ่ม
+                </button>
+                <button id="main-tab-register" class="main-tab-button py-3 px-3 font-bold text-sm md:text-base">
+                    📝 บันทึกข้อมูลนักเรียน
+                </button>
+                <button id="main-tab-report" class="main-tab-button py-3 px-3 font-bold text-sm md:text-base">
+                    📊 รายงานการพบกลุ่ม
+                </button>
+                <button id="main-tab-list" class="main-tab-button py-3 px-3 font-bold text-sm md:text-base">
+                    👥 รายชื่อผู้เรียน
+                </button>
+                <button id="main-tab-rooms" class="main-tab-button py-3 px-3 font-bold text-sm md:text-base">
+                    🏫 ตั้งค่าระดับการศึกษา
+                </button>
+            </div>
+
+            <div id="attendance-section" class="hidden">
+                <div class="modern-card mb-6">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">เลือกระดับการศึกษา</h2>
+                    <select id="attendance-room-select" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-primary focus:border-primary text-lg">
+                        <option value="">-- เลือกระดับการศึกษา --</option>
+                    </select>
+                </div>
+
+                <div id="attendance-camera-section" class="hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 modern-card">
+                            <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">กล้องตรวจจับใบหน้า</h2>
+                            <div class="camera-container mb-4 relative">
+                                <video id="attendance-camera-video" autoplay playsinline muted></video>
+                                <canvas id="attendance-camera-canvas" class="pointer-events-none"></canvas>
+                            </div>
+
+                            <div id="attendance-summary" class="px-4 py-3 rounded-xl font-extrabold text-lg btn-shadow" style="background-color: var(--color-success); color: white;">
+                                <span id="attendance-count">✅ พบ 0 คน ในระดับนี้</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
+                                <button id="start-attendance-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
+                                    ▶️ เปิดกล้อง
+                                </button>
+                                <button id="switch-attendance-camera-btn" class="py-2 px-3 rounded-xl font-bold transition-colors hidden text-base bg-gray-500 text-white hover:bg-gray-600">
+                                    🔄 สลับ
+                                </button>
+                                <button id="toggle-sound-btn" class="py-2 px-3 rounded-xl font-bold transition-colors hidden text-base bg-blue-500 text-white hover:bg-blue-600">
+                                    🔊 เสียง: เปิด
+                                </button>
+                                <button id="stop-attendance-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors hidden text-lg bg-danger text-white hover:bg-red-700 btn-shadow">
+                                    ◼️ ปิดกล้อง
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="modern-card">
+                            <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">รายชื่อที่ตรวจพบ (<span id="face-count-detect">0</span>)</h2>
+                             <div id="detected-list" class="space-y-3 mb-4 max-h-[350px] lg:max-h-[500px] overflow-y-auto pr-2 text-lg">
+                                <p class="text-center py-8 text-base text-muted">รอการตรวจจับใบหน้า...</p>
+                            </div>
+                            <button id="save-attendance-btn" class="w-full py-3 rounded-xl font-bold transition-colors text-lg bg-success text-white disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-emerald-700 btn-shadow" disabled>
+                                <span id="save-attendance-text">💾 บันทึกการพบกลุ่ม</span>
+                                <div id="save-attendance-loading" class="loading-spinner mx-auto hidden"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="register-section" class="hidden">
+                <div class="modern-card mb-6">
+                    <h2 class="text-xl md:text-2xl font-bold mb-6 text-primary">บันทึกข้อมูลผู้เรียนใหม่</h2>
+                    
+                    <div class="flex flex-wrap md:flex-nowrap gap-3 mb-6">
+                        <button id="register-tab-upload" class="flex-1 main-tab-button active py-2 md:py-3 px-4 font-bold text-sm md:text-base">
+                            อัปโหลดรูป
+                        </button>
+                        <button id="register-tab-camera" class="flex-1 main-tab-button py-2 md:py-3 px-4 font-bold text-sm md:text-base">
+                            ใช้กล้อง (ถ่ายสด)
+                        </button>
+                    </div>
+
+                    <div id="register-upload-section">
+                        <form id="add-face-form" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="person-name" class="block text-base font-medium mb-1 text-muted">ชื่อ-นามสกุล</label>
+                                    <input type="text" id="person-name" required placeholder="นาย/นางสาว..." class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                                </div>
+                                <div>
+                                    <label for="student-room" class="block text-base font-medium mb-1 text-muted">ระดับการศึกษา</label>
+                                    <select id="student-room" required class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                                        <option value="">เลือกระดับการศึกษา</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="face-image" class="block text-base font-medium mb-1 text-muted">อัปโหลดรูปภาพ (ต้องเห็นใบหน้าชัดเจน)</label>
+                                <input type="file" id="face-image" accept="image/*" required class="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-50 text-base">
+                            </div>
+                            <div id="preview-container" class="hidden">
+                                <img id="image-preview" class="w-full h-56 object-contain rounded-xl border border-gray-200 shadow-lg">
+                            </div>
+                            <button type="submit" id="add-button" class="w-full py-3 rounded-xl font-bold transition-colors text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
+                                <span id="add-button-text">บันทึกข้อมูลนักเรียน</span>
+                                <div id="add-loading" class="loading-spinner mx-auto hidden"></div>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div id="register-camera-section" class="hidden space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="camera-person-name" class="block text-base font-medium mb-1 text-muted">ชื่อ-นามสกุล</label>
+                                <input type="text" id="camera-person-name" placeholder="นาย/นางสาว..." class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                            </div>
+                            <div>
+                                <label for="camera-student-room" class="block text-base font-medium mb-1 text-muted">ระดับการศึกษา</label>
+                                <select id="camera-student-room" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                                    <option value="">เลือกระดับการศึกษา</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-container relative">
+                            <video id="register-camera-video" autoplay playsinline muted></video>
+                            <canvas id="register-camera-canvas" class="pointer-events-none"></canvas>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <button id="start-register-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
+                                ▶️ เปิดกล้อง
+                            </button>
+                            <button id="switch-register-camera-btn" class="py-2 rounded-xl font-bold transition-colors hidden text-base bg-gray-500 text-white hover:bg-gray-600">
+                                🔄 สลับ
+                            </button>
+                            <button id="capture-register-btn" class="py-2 rounded-xl font-bold transition-colors hidden text-base bg-yellow-500 text-white hover:bg-yellow-600 btn-shadow">
+                                📸 ถ่ายภาพ
+                            </button>
+                            <button id="save-register-btn" class="col-span-2 md:col-span-1 py-3 rounded-xl font-bold transition-colors hidden text-lg bg-success text-white hover:bg-emerald-700 btn-shadow">
+                                💾 บันทึก
+                            </button>
+                        </div>
+                        <canvas id="captured-image-canvas" class="w-full rounded-xl hidden border border-gray-200 shadow-md" style="aspect-ratio: 4/3; object-fit: cover;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="report-section" class="hidden">
+                <div class="modern-card mb-6">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">เลือกเงื่อนไขรายงาน</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label for="report-room-select" class="block text-base font-medium mb-1 text-muted">ระดับการศึกษา</label>
+                            <select id="report-room-select" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                                <option value="">-- เลือกระดับการศึกษา --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="report-start-date" class="block text-base font-medium mb-1 text-muted">วันที่เริ่มต้น</label>
+                            <input type="date" id="report-start-date" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                        </div>
+                        <div>
+                            <label for="report-end-date" class="block text-base font-medium mb-1 text-muted">วันที่สิ้นสุด</label>
+                            <input type="date" id="report-end-date" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                        </div>
+                    </div>
+                    <button id="load-report-btn" class="w-full py-3 rounded-xl font-bold text-lg transition-colors bg-primary text-white hover:bg-indigo-700 btn-shadow">
+                        <span id="load-report-text">🔍 ดูรายงานการพบกลุ่ม</span>
+                        <div id="load-report-loading" class="loading-spinner mx-auto hidden"></div>
+                    </button>
+                </div>
+
+                <div id="report-results" class="hidden">
+                    <div class="modern-card mb-6">
+                        <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">สรุปผลการพบกลุ่ม</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="p-4 rounded-xl text-center bg-indigo-50/70 border-l-4 border-primary shadow-inner">
+                                <p class="text-base font-medium text-muted">ผู้เรียนทุกระดับ</p>
+                                <p id="total-students" class="text-2xl font-extrabold mt-1 text-primary">0</p>
+                            </div>
+                            <div class="p-4 rounded-xl text-center bg-emerald-50/70 border-l-4 border-success shadow-inner">
+                                <p class="text-base font-medium text-muted">มาพบกลุ่ม</p>
+                                <p id="attended-students" class="text-2xl font-extrabold mt-1 text-success">0</p>
+                            </div>
+                            <div class="p-4 rounded-xl text-center bg-red-50/70 border-l-4 border-danger shadow-inner">
+                                <p class="text-base font-medium text-muted">ไม่มาพบกลุ่ม</p>
+                                <p id="absent-students" class="text-2xl font-extrabold mt-1 text-danger">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modern-card">
+                        <div class="flex flex-wrap justify-between items-center mb-4">
+                            <h2 class="text-xl md:text-2xl font-bold text-primary">รายละเอียดการมาพบกลุ่ม</h2>
+                            <div class="flex flex-wrap gap-2 mt-4 md:mt-0">
+                                <button id="export-excel-btn" class="px-4 py-2 rounded-xl font-bold transition-colors text-base bg-success text-white hover:bg-emerald-700 btn-shadow">
+                                    📥 ส่งออก Excel
+                                </button>
+                                <button id="delete-attendance-btn" class="px-4 py-2 rounded-xl font-bold transition-colors text-base bg-danger text-white hover:bg-red-700 btn-shadow">
+                                    🗑️ ลบข้อมูล
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-xl border border-2 border-gray-200">
+                            <table id="report-table" class="w-full text-left report-table">
+                                <thead>
+                                    <tr class="bg-indigo-50/70 text-primary font-extrabold">
+                                        <th class="px-4 py-2 text-base border-b-2 border-primary">ลำดับ</th>
+                                        <th class="px-4 py-2 text-base border-b-2 border-primary">ชื่อ-นามสกุล</th>
+                                        <th class="px-4 py-2 text-base border-b-2 border-primary">ระดับการศึกษา</th>
+                                        <th class="px-4 py-2 text-center text-base border-b-2 border-primary">สถานะ</th>
+                                        <th class="px-4 py-2 text-center text-base border-b-2 border-primary">วันที่</th>
+                                        <th class="px-4 py-2 text-center text-base border-b-2 border-primary">เวลา</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-table-body">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="list-section" class="hidden">
+                <div class="modern-card mb-6">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">กรองรายชื่อผู้เรียน</h2>
+                    <select id="list-room-filter" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-lg">
+                        <option value="">ทุกระดับชั้น</option>
+                    </select>
+                </div>
+
+                <div class="modern-card">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">รายชื่อผู้เรียนที่บันทึกไว้ (<span id="face-count">0</span>)</h2>
+                    <div id="faces-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <p class="col-span-full text-center py-8 text-base text-muted">กำลังโหลดข้อมูล...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="rooms-section" class="hidden">
+                <div class="modern-card mb-6">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">เพิ่มระดับการศึกษาใหม่</h2>
+                    <form id="add-room-form" class="space-y-4">
+                        <div>
+                            <label for="new-room-name" class="block text-base font-medium mb-1 text-muted">ชื่อระดับการศึกษา</label>
+                            <input type="text" id="new-room-name" required placeholder="เช่น: มัธยมศึกษาตอนปลาย" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                        </div>
+                        <button type="submit" id="add-room-button" class="w-full py-3 rounded-xl font-bold transition-colors text-lg bg-success text-white hover:bg-emerald-700 btn-shadow">
+                            <span id="add-room-button-text">➕ เพิ่มระดับการศึกษา</span>
+                            <div id="add-room-loading" class="loading-spinner mx-auto hidden"></div>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="modern-card">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">รายชื่อระดับการศึกษา (<span id="room-count">0</span>)</h2>
+                    <div id="rooms-list" class="space-y-3">
+                        <p class="text-center py-8 text-base text-muted">กำลังโหลดข้อมูล...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   <script>
     const defaultConfig = {
       background_color: "#f0f9ff",
