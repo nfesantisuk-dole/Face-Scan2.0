@@ -4,55 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบเช็คชื่อการพบกลุ่ม ศกร.ระดับตำบลสันติสุข (Face Scan) </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJdZ6g58E62tINP9r2bJ1M0Yx6b04D2rK+2L5l3S0C5v3/i5jF5i+v5b/j1B+g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="/_sdk/element_sdk.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-
+    
     <style>
-        /* 1. Global Setup and Sarabun Font */
+        /* 1. Global Setup and Color Variables (PURPLE PRIMARY) */
         :root {
-            --color-primary: #0D9488; /* Teal 600 */
-            --color-primary-dark: #0F766E; /* Teal 700 */
-            --color-success: #10B981; /* Emerald 600 */
-            --color-danger: #EF4444; /* Red 500 */
-            --color-bg-light: #F7F8FC; /* Very light, soft gray/blue */
-            --color-muted: #6B7280;
+            --color-primary: #8B5CF6; /* Purple 500 (NEW PRIMARY) */
+            --color-primary-dark: #7C3AED; /* Purple 600 */
+            --color-success: #10B981; 
+            --color-danger: #EF4444; 
+            --color-bg-light: #F7F8FC; 
+            --color-muted: #6B7280; 
         }
 
-        /* 2. Base Font Size Adjustment for better mobile scaling */
+        /* 2. Base Font Size (SMALLER & RESPONSIVE) and System Font Stack */
         body, html {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'Sarabun', sans-serif !important;
-            line-height: 1.6;
+            /* ใช้ System Fonts เพื่อความเร็ว */
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5;
             color: #1f2937;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-color: var(--color-bg-light); 
-            /* Base text size set to a slightly smaller 0.95rem */
-            font-size: 0.95rem; /* ~15.2px for better density */
+            background-color: var(--color-bg-light);
+            /* ขนาดตัวอักษรเริ่มต้น (มือถือ) เล็กลงกว่าปกติเล็กน้อย */
+            font-size: 0.95rem; 
+            font-weight: 400; 
+        }
+        @media (min-width: 768px) {
+            body {
+                font-size: 1rem; /* ขนาดปกติบน Desktop */
+            }
         }
 
-        /* 3. Form Elements (Adjusted padding to be more compact) */
+        /* 3. Form Elements: Modern Soft Input Style */
         input, select, textarea {
-            padding-left: 1rem; /* px-4 */
-            padding-right: 1rem; /* px-4 */
-            padding-top: 0.5rem; /* py-2 */
-            padding-bottom: 0.5rem; /* py-2 */
-            font-size: 1rem; /* Adjust based on new base size */
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-top: 0.6rem; 
+            padding-bottom: 0.6rem; 
+            font-size: 1rem; /* ขนาดตัวอักษรใน Input/Select/Textarea */
+            border: 1px solid #e5e7eb;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+            font-weight: 400; 
+            border-radius: 0.75rem; 
         }
         input:focus, select:focus, textarea:focus {
             outline: 2px solid var(--color-primary);
             outline-offset: 1px;
-            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.2);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2); 
             border-color: var(--color-primary) !important;
         }
-
+        
         /* 4. Main Tab Button (Soft/macOS Style) */
         .main-tab-button {
             background-color: #ffffff;
@@ -60,16 +70,26 @@
             color: #4b5563;
             border-radius: 1rem;
             font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), 0 0px 1px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 0px 1px rgba(0, 0, 0, 0.03);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0.75rem 1rem; /* Adjusted vertical padding for compactness */
+            padding: 0.75rem 0.8rem;
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1rem;
         }
-
+        @media (min-width: 768px) {
+            .main-tab-button {
+                font-size: 1.125rem;
+                padding: 0.85rem 1rem;
+            }
+        }
         .main-tab-button.active {
-            background-color: var(--color-primary); 
+            background-color: var(--color-primary);
             color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(13, 148, 136, 0.4);
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
             transform: translateY(-1px);
         }
         .main-tab-button:not(.active):hover {
@@ -77,35 +97,97 @@
             transform: translateY(-0.5px);
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07);
         }
-        @media (max-width: 767px) {
-            .main-tab-button {
-                flex-basis: 100%;
-                font-size: 0.875rem; /* text-sm on mobile */
-            }
-        }
-        @media (min-width: 768px) {
-            .main-tab-button {
-                font-size: 1rem; /* text-base on desktop */
-            }
-        }
-
+        
         /* 5. Main Card/Panel (macOS/Soft UI Shadow & Rounded) */
         .modern-card {
             background-color: white;
-            border-radius: 2rem;
-            padding: 2rem; /* Reduced padding from 2.5rem */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 3px 10px rgba(0, 0, 0, 0.03); 
+            border-radius: 1.5rem; 
+            padding: 1.5rem; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 3px 10px rgba(0, 0, 0, 0.03);
         }
-        @media (max-width: 767px) {
+        @media (min-width: 768px) {
              .modern-card {
-                padding: 1.25rem; /* Reduced padding from 1.5rem */
-                border-radius: 1.5rem;
+                padding: 2rem;
+                border-radius: 2rem;
             }
         }
+        
+        /* 6. MODERN LOADING OVERLAY STYLES (UPDATED FOR AESTHETICS) */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-bg-light); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
 
-        /* 6. Other Custom Styles (Unchanged) */
-        .toast {
+        /* MODERN SPINNER STYLE */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 2rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* PROGRESS BAR STYLES */
+        .progress-container {
+            width: 80%;
+            max-width: 400px;
+            background-color: #e5e7eb; /* Gray 200 */
             border-radius: 1rem;
+            margin-top: 1rem;
+            height: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--color-primary);
+            border-radius: 1rem;
+            transition: width 0.4s ease-out;
+        }
+
+        /* Loading Text Container */
+        .loading-info-card {
+            background-color: white;
+            padding: 2rem 3rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 3px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e5e7eb;
+        }
+        .loading-info-card #loading-text {
+            font-size: 1.25rem; 
+            font-weight: 700;
+            color: var(--color-primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        .loading-info-card #loading-progress {
+            font-size: 1rem; 
+            font-weight: 500;
+            color: var(--color-muted);
+            margin-top: 0.5rem;
+        }
+        
+        /* 7. Other Custom Styles */
+        .toast {
+            border-radius: 0.75rem; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
             background: #ffffff;
             color: #1f2937;
@@ -115,73 +197,11 @@
         .toast.success { border-left: 5px solid var(--color-success); }
         .toast.error { border-left: 5px solid var(--color-danger); }
         .toast.info { border-left: 5px solid #3b82f6; }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            color: white;
-            background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
-        }
-        .loading-overlay .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.2);
-            border-top: 4px solid var(--color-primary);
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite; 
-            margin-bottom: 24px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .camera-container {
-            position: relative;
-            aspect-ratio: 4 / 3;
-            overflow: hidden;
-            border-radius: 1.5rem;
-            border: 3px solid var(--color-primary);
-            box-shadow: 0 5px 15px rgba(13, 148, 136, 0.2);
-        }
-        .camera-container video, .camera-container canvas {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .report-table tbody tr:nth-child(even) {
-            background-color: #fcfcfd;
-        }
-        .report-table tbody tr:hover {
-            background-color: #e5f7f5;
-            transition: background-color 0.2s;
-            cursor: pointer;
-        }
-
-        .btn-shadow {
-             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
-        }
-        .text-primary { color: var(--color-primary) !important; }
-        .bg-primary { background-color: var(--color-primary) !important; }
-        .hover\:bg-indigo-700:hover { background-color: var(--color-primary-dark) !important; }
-        .border-primary { border-color: var(--color-primary) !important; }
-        .bg-indigo-50\/70 { background-color: rgba(13, 148, 136, 0.05) !important; }
-        
-        .loading-spinner {
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            width: 1.25rem;
-            height: 1.25rem;
-            animation: spin 1s linear infinite;
-        }
-
+        .camera-container { position: relative; width: 100%; padding-top: 75%; overflow: hidden; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .camera-container video, .camera-container canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .report-table th, .report-table td { padding: 0.75rem 0.5rem; }
+        .report-table tbody tr:nth-child(even) { background-color: #f9fafb; }
+        .report-table tbody tr:hover { background-color: #f3f4f6; transition: background-color 0.15s; }
     </style>
 
     <script>
@@ -189,90 +209,100 @@
             theme: {
                 extend: {
                     colors: {
-                        'primary': '#0D9488', // Teal 600 (New Primary)
-                        'success': '#059669', // Emerald 600
-                        'danger': '#DC2626', // Red 600
-                        'muted': '#6B7280', // Gray 500
-                        'bg-light': '#F7F8FC', // Soft background
+                        'primary': '#8B5CF6', 
+                        'success': '#059669', 
+                        'danger': '#DC2626', 
+                        'muted': '#6B7280', 
+                        'bg-light': '#F7F8FC', 
                     },
                     borderRadius: {
-                        '2xl': '1.5rem', /* 24px */
-                        '3xl': '2rem', /* 32px */
+                        'xl': '0.75rem', 
+                        '2xl': '1.5rem', 
+                        '3xl': '2rem', 
                     }
                 }
             }
         }
     </script>
     <style>@view-transition { navigation: auto; }</style>
-    <script src="/_sdk/data_sdk.js" type="text/javascript"></script></head>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+</head>
 <body class="bg-bg-light">
-    <div id="loading-overlay" class="loading-overlay">
-        <div class="spinner"></div>
-        <p id="loading-text" class="text-2xl font-bold">กำลังโหลด AI Models...</p>
-        <p id="loading-progress" class="text-xl mt-4">0%</p>
-    </div>
 
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-info-card">
+            <div class="spinner"></div>
+
+            <p id="loading-text" class="text-xl font-bold">กำลังเตรียมระบบจดจำใบหน้า...</p> 
+            
+            <div class="progress-container">
+                <div id="loading-progress-bar" class="progress-bar"></div>
+            </div>
+            
+            <p id="loading-progress" class="text-base mt-4 text-muted">0%</p>
+        </div>
+    </div>
     <div id="config-modal" class="config-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" style="display: none;">
         <div class="modern-card max-w-lg w-full">
-            <h2 class="text-2xl font-extrabold mb-4 text-primary">ตั้งค่า Google Apps Script</h2>
-            <p class="mb-4 text-gray-700 text-base">กรุณาใส่ **URL Web App** ที่ท่าน Deploy จาก Google Apps Script</p>
-            <input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-4 py-2 border border-gray-300 rounded-xl mb-4 text-base">
-            <button id="save-url-btn" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors text-lg btn-shadow">
+            <h2 class="text-xl md:text-2xl font-extrabold mb-4 text-primary">ตั้งค่า Google Apps Script</h2>
+            <p class="mb-4 text-gray-700 text-base md:text-lg">กรุณาใส่ **URL Web App** ที่ท่าน Deploy จาก Google Apps Script</p>
+            <input type="text" id="gas-url-input" placeholder="https://script.google.com/a/macros/cmi.nfe.go.th/s/AKfycbzcROiJNZ-5AQbDYbPs_l2-hoKurM5Cxpt_knt_ufYGp9jOfOGY9qlyMAdiMynmHAD7oA/exec" class="w-full px-4 py-3 border border-gray-300 rounded-xl mb-4 text-base md:text-lg">
+            <button id="save-url-btn" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors text-base md:text-lg btn-shadow">
                 💾 บันทึก URL
             </button>
-            <p class="mt-4 text-sm text-gray-500">URL ต้องลงท้ายด้วย /exec และต้องตั้งค่า "Who has access" เป็น "Anyone"</p>
+            <p class="mt-4 text-xs text-gray-500 md:text-sm">URL ต้องลงท้ายด้วย /exec และต้องตั้งค่า "Who has access" เป็น "Anyone"</p>
         </div>
     </div>
 
     <div id="confirm-delete-modal" class="confirm-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" style="display: none;">
         <div class="modern-card max-w-sm w-full">
-             <h2 class="text-2xl font-extrabold mb-4 text-danger text-center">⚠️ ยืนยันการลบ</h2>
+             <h2 class="text-xl md:text-2xl font-extrabold mb-4 text-danger text-center">⚠️ ยืนยันการลบ</h2>
              <p id="confirm-delete-message" class="mb-6 text-center text-gray-700 text-lg font-medium"></p>
-            <div class="flex gap-4">
-                 <button id="confirm-delete-cancel" class="flex-1 py-3 bg-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-400 transition-colors text-lg">
+             <div class="flex gap-4">
+                <button id="confirm-delete-cancel" class="flex-1 py-3 bg-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-400 transition-colors text-base md:text-lg">
                     ยกเลิก
                 </button>
-                 <button id="confirm-delete-confirm" class="flex-1 py-3 bg-danger text-white rounded-xl font-bold hover:bg-red-700 transition-colors text-lg btn-shadow">
+                <button id="confirm-delete-confirm" class="flex-1 py-3 bg-danger text-white rounded-xl font-bold hover:bg-red-700 transition-colors text-base md:text-lg btn-shadow">
                     🔥 ลบ
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="app" class="min-h-full p-4 md:p-6 lg:p-8" style="display: none;">
+    <div id="app" class="min-h-full p-3 md:p-6 lg:p-8" style="display: none;"> 
         <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-                <h1 id="app-title" class="text-2xl lg:text-3xl font-extrabold text-primary mb-4 md:mb-0">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8">
+                <h1 id="app-title" class="text-2xl lg:text-3xl font-extrabold text-primary mb-4 md:mb-0"> 
                     <span class="text-muted">ระบบเช็คชื่อ</span> ศกร.ตำบลสันติสุข 
-                    <span class="text-xl lg:text-2xl text-gray-500">(Face Scan)</span>
+                    <span class="text-lg lg:text-xl text-gray-500">(Face Scan)</span>
                 </h1>
-                <button id="change-url-btn" class="px-5 py-2 bg-muted text-white rounded-xl text-base hover:bg-gray-700 transition-colors btn-shadow">
-                    ⚙️ ตั้งค่า Apps Script
+                <button id="change-url-btn" class="px-4 py-2 bg-muted text-white rounded-xl text-sm md:text-base hover:bg-gray-700 transition-colors btn-shadow font-medium">
+                    <i class="fas fa-cog mr-2"></i> ตั้งค่า Apps Script
                 </button>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
-                <button id="main-tab-attendance" class="main-tab-button active py-3 px-3 font-bold text-sm md:text-base">
-                    ✅ เช็คชื่อมาพบกลุ่ม
+                <button id="main-tab-attendance" class="main-tab-button active font-medium text-base md:text-lg">
+                    <i class="fas fa-user-check"></i> เช็คชื่อมาพบกลุ่ม
                 </button>
-                <button id="main-tab-register" class="main-tab-button py-3 px-3 font-bold text-sm md:text-base">
-                    📝 บันทึกข้อมูลนักเรียน
+                <button id="main-tab-register" class="main-tab-button font-medium text-base md:text-lg">
+                    <i class="fas fa-portrait"></i> บันทึกข้อมูลนักเรียน
                 </button>
-                <button id="main-tab-report" class="main-tab-button py-3 px-3 font-bold text-sm md:text-base">
-                    📊 รายงานการพบกลุ่ม
+                <button id="main-tab-report" class="main-tab-button font-medium text-base md:text-lg">
+                    <i class="fas fa-chart-bar"></i> รายงานการพบกลุ่ม
                 </button>
-                <button id="main-tab-list" class="main-tab-button py-3 px-3 font-bold text-sm md:text-base">
-                    👥 รายชื่อผู้เรียน
+                <button id="main-tab-list" class="main-tab-button font-medium text-base md:text-lg">
+                    <i class="fas fa-users"></i> รายชื่อผู้เรียน
                 </button>
-                <button id="main-tab-rooms" class="main-tab-button py-3 px-3 font-bold text-sm md:text-base">
-                    🏫 ตั้งค่าระดับการศึกษา
+                <button id="main-tab-rooms" class="main-tab-button font-medium text-base md:text-lg">
+                    <i class="fas fa-graduation-cap"></i> ตั้งค่าระดับการศึกษา
                 </button>
             </div>
 
             <div id="attendance-section" class="hidden">
                 <div class="modern-card mb-6">
-                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">เลือกระดับการศึกษา</h2>
-                    <select id="attendance-room-select" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-primary focus:border-primary text-lg">
+                    <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-list-alt mr-2"></i> เลือกระดับการศึกษา</h2>
+                    <select id="attendance-room-select" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-primary focus:border-primary text-base md:text-lg">
                         <option value="">-- เลือกระดับการศึกษา --</option>
                     </select>
                 </div>
@@ -280,39 +310,39 @@
                 <div id="attendance-camera-section" class="hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="lg:col-span-2 modern-card">
-                            <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">กล้องตรวจจับใบหน้า</h2>
+                            <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-video mr-2"></i> กล้องตรวจจับใบหน้า</h2>
                             <div class="camera-container mb-4 relative">
                                 <video id="attendance-camera-video" autoplay playsinline muted></video>
                                 <canvas id="attendance-camera-canvas" class="pointer-events-none"></canvas>
                             </div>
 
-                            <div id="attendance-summary" class="px-4 py-3 rounded-xl font-extrabold text-lg btn-shadow" style="background-color: var(--color-success); color: white;">
-                                <span id="attendance-count">✅ พบ 0 คน ในระดับนี้</span>
+                            <div id="attendance-summary" class="px-4 py-3 rounded-xl font-bold text-lg btn-shadow" style="background-color: var(--color-success); color: white;">
+                                <span id="attendance-count"><i class="fas fa-check-circle mr-2"></i> พบ 0 คน ในระดับนี้</span>
                             </div>
-                            
+
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
-                                <button id="start-attendance-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
-                                    ▶️ เปิดกล้อง
+                                <button id="start-attendance-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors text-base md:text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
+                                    <i class="fas fa-play mr-2"></i> เปิดกล้อง
                                 </button>
-                                <button id="switch-attendance-camera-btn" class="py-2 px-3 rounded-xl font-bold transition-colors hidden text-base bg-gray-500 text-white hover:bg-gray-600">
-                                    🔄 สลับ
+                                <button id="switch-attendance-camera-btn" class="py-3 px-3 rounded-xl font-medium transition-colors hidden text-sm md:text-base bg-gray-500 text-white hover:bg-gray-600">
+                                    <i class="fas fa-sync-alt"></i> สลับ
                                 </button>
-                                <button id="toggle-sound-btn" class="py-2 px-3 rounded-xl font-bold transition-colors hidden text-base bg-blue-500 text-white hover:bg-blue-600">
-                                    🔊 เสียง: เปิด
+                                <button id="toggle-sound-btn" class="py-3 px-3 rounded-xl font-medium transition-colors hidden text-sm md:text-base bg-blue-500 text-white hover:bg-blue-600">
+                                    <i class="fas fa-volume-up mr-1" id="sound-icon"></i> <span id="sound-text">เสียง: เปิด</span>
                                 </button>
-                                <button id="stop-attendance-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors hidden text-lg bg-danger text-white hover:bg-red-700 btn-shadow">
-                                    ◼️ ปิดกล้อง
+                                <button id="stop-attendance-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors hidden text-base md:text-lg bg-danger text-white hover:bg-red-700 btn-shadow">
+                                    <i class="fas fa-stop mr-2"></i> ปิดกล้อง
                                 </button>
                             </div>
                         </div>
 
                         <div class="modern-card">
-                            <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">รายชื่อที่ตรวจพบ (<span id="face-count-detect">0</span>)</h2>
-                             <div id="detected-list" class="space-y-3 mb-4 max-h-[350px] lg:max-h-[500px] overflow-y-auto pr-2 text-lg">
-                                <p class="text-center py-8 text-base text-muted">รอการตรวจจับใบหน้า...</p>
+                            <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-users-viewfinder mr-2"></i> รายชื่อที่ตรวจพบ (<span id="face-count-detect">0</span>)</h2>
+                            <div id="detected-list" class="space-y-3 mb-4 max-h-[350px] lg:max-h-[500px] overflow-y-auto pr-2 text-base"> 
+                                <p class="text-center py-8 text-sm text-muted font-medium"><i class="fas fa-hourglass-start mr-2"></i> รอการตรวจจับใบหน้า...</p>
                             </div>
-                            <button id="save-attendance-btn" class="w-full py-3 rounded-xl font-bold transition-colors text-lg bg-success text-white disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-emerald-700 btn-shadow" disabled>
-                                <span id="save-attendance-text">💾 บันทึกการพบกลุ่ม</span>
+                            <button id="save-attendance-btn" class="w-full py-3 rounded-xl font-bold transition-colors text-base md:text-lg bg-success text-white disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-emerald-700 btn-shadow" disabled>
+                                <span id="save-attendance-text"><i class="fas fa-save mr-2"></i> บันทึกการพบกลุ่ม</span>
                                 <div id="save-attendance-loading" class="loading-spinner mx-auto hidden"></div>
                             </button>
                         </div>
@@ -322,14 +352,14 @@
 
             <div id="register-section" class="hidden">
                 <div class="modern-card mb-6">
-                    <h2 class="text-xl md:text-2xl font-bold mb-6 text-primary">บันทึกข้อมูลผู้เรียนใหม่</h2>
-                    
+                    <h2 class="text-lg md:text-xl font-bold mb-6 text-primary"><i class="fas fa-user-plus mr-2"></i> บันทึกข้อมูลผู้เรียนใหม่</h2>
+
                     <div class="flex flex-wrap md:flex-nowrap gap-3 mb-6">
-                        <button id="register-tab-upload" class="flex-1 main-tab-button active py-2 md:py-3 px-4 font-bold text-sm md:text-base">
-                            อัปโหลดรูป
+                        <button id="register-tab-upload" class="flex-1 main-tab-button active py-2 md:py-3 px-4 font-medium text-sm md:text-base">
+                            <i class="fas fa-upload"></i> อัปโหลดรูป
                         </button>
-                        <button id="register-tab-camera" class="flex-1 main-tab-button py-2 md:py-3 px-4 font-bold text-sm md:text-base">
-                            ใช้กล้อง (ถ่ายสด)
+                        <button id="register-tab-camera" class="flex-1 main-tab-button py-2 md:py-3 px-4 font-medium text-sm md:text-base">
+                            <i class="fas fa-camera"></i> ใช้กล้อง (ถ่ายสด)
                         </button>
                     </div>
 
@@ -337,39 +367,39 @@
                         <form id="add-face-form" class="space-y-4">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label for="person-name" class="block text-base font-medium mb-1 text-muted">ชื่อ-นามสกุล</label>
-                                    <input type="text" id="person-name" required placeholder="นาย/นางสาว..." class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                                    <label for="person-name" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-user-tag mr-1"></i> ชื่อ-นามสกุล</label>
+                                    <input type="text" id="person-name" required placeholder="นาย/นางสาว..." class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                                 </div>
                                 <div>
-                                    <label for="student-room" class="block text-base font-medium mb-1 text-muted">ระดับการศึกษา</label>
-                                    <select id="student-room" required class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                                    <label for="student-room" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-school mr-1"></i> ระดับการศึกษา</label>
+                                    <select id="student-room" required class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                                         <option value="">เลือกระดับการศึกษา</option>
                                     </select>
                                 </div>
                             </div>
                             <div>
-                                <label for="face-image" class="block text-base font-medium mb-1 text-muted">อัปโหลดรูปภาพ (ต้องเห็นใบหน้าชัดเจน)</label>
-                                <input type="file" id="face-image" accept="image/*" required class="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-50 text-base">
+                                <label for="face-image" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-image mr-1"></i> อัปโหลดรูปภาพ (ต้องเห็นใบหน้าชัดเจน)</label>
+                                <input type="file" id="face-image" accept="image/*" required class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-base md:text-lg">
                             </div>
                             <div id="preview-container" class="hidden">
-                                <img id="image-preview" class="w-full h-56 object-contain rounded-xl border border-gray-200 shadow-lg">
+                                <img id="image-preview" class="w-full h-48 md:h-56 object-contain rounded-xl border border-gray-200 shadow-lg">
                             </div>
-                            <button type="submit" id="add-button" class="w-full py-3 rounded-xl font-bold transition-colors text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
-                                <span id="add-button-text">บันทึกข้อมูลนักเรียน</span>
+                            <button type="submit" id="add-button" class="w-full py-3 rounded-xl font-bold transition-colors text-base md:text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
+                                <span id="add-button-text"><i class="fas fa-floppy-disk mr-2"></i> บันทึกข้อมูลนักเรียน</span>
                                 <div id="add-loading" class="loading-spinner mx-auto hidden"></div>
                             </button>
                         </form>
                     </div>
-                    
+
                     <div id="register-camera-section" class="hidden space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label for="camera-person-name" class="block text-base font-medium mb-1 text-muted">ชื่อ-นามสกุล</label>
-                                <input type="text" id="camera-person-name" placeholder="นาย/นางสาว..." class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                                <label for="camera-person-name" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-user-tag mr-1"></i> ชื่อ-นามสกุล</label>
+                                <input type="text" id="camera-person-name" placeholder="นาย/นางสาว..." class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                             </div>
                             <div>
-                                <label for="camera-student-room" class="block text-base font-medium mb-1 text-muted">ระดับการศึกษา</label>
-                                <select id="camera-student-room" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                                <label for="camera-student-room" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-school mr-1"></i> ระดับการศึกษา</label>
+                                <select id="camera-student-room" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                                     <option value="">เลือกระดับการศึกษา</option>
                                 </select>
                             </div>
@@ -379,17 +409,17 @@
                             <canvas id="register-camera-canvas" class="pointer-events-none"></canvas>
                         </div>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            <button id="start-register-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
-                                ▶️ เปิดกล้อง
+                            <button id="start-register-camera-btn" class="col-span-2 py-3 rounded-xl font-bold transition-colors text-base md:text-lg bg-primary text-white hover:bg-indigo-700 btn-shadow">
+                                <i class="fas fa-play mr-2"></i> เปิดกล้อง
                             </button>
-                            <button id="switch-register-camera-btn" class="py-2 rounded-xl font-bold transition-colors hidden text-base bg-gray-500 text-white hover:bg-gray-600">
-                                🔄 สลับ
+                            <button id="switch-register-camera-btn" class="py-3 rounded-xl font-medium transition-colors hidden text-sm md:text-base bg-gray-500 text-white hover:bg-gray-600">
+                                <i class="fas fa-sync-alt"></i> สลับ
                             </button>
-                            <button id="capture-register-btn" class="py-2 rounded-xl font-bold transition-colors hidden text-base bg-yellow-500 text-white hover:bg-yellow-600 btn-shadow">
-                                📸 ถ่ายภาพ
+                            <button id="capture-register-btn" class="py-3 rounded-xl font-medium transition-colors hidden text-sm md:text-base bg-yellow-500 text-white hover:bg-yellow-600 btn-shadow">
+                                <i class="fas fa-camera-retro mr-1"></i> ถ่ายภาพ
                             </button>
-                            <button id="save-register-btn" class="col-span-2 md:col-span-1 py-3 rounded-xl font-bold transition-colors hidden text-lg bg-success text-white hover:bg-emerald-700 btn-shadow">
-                                💾 บันทึก
+                            <button id="save-register-btn" class="col-span-2 md:col-span-1 py-3 rounded-xl font-bold transition-colors hidden text-base md:text-lg bg-success text-white hover:bg-emerald-700 btn-shadow">
+                                <i class="fas fa-save mr-2"></i> บันทึก
                             </button>
                         </div>
                         <canvas id="captured-image-canvas" class="w-full rounded-xl hidden border border-gray-200 shadow-md" style="aspect-ratio: 4/3; object-fit: cover;"></canvas>
@@ -399,75 +429,75 @@
 
             <div id="report-section" class="hidden">
                 <div class="modern-card mb-6">
-                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">เลือกเงื่อนไขรายงาน</h2>
+                    <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-filter mr-2"></i> เลือกเงื่อนไขรายงาน</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div>
-                            <label for="report-room-select" class="block text-base font-medium mb-1 text-muted">ระดับการศึกษา</label>
-                            <select id="report-room-select" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                            <label for="report-room-select" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-school mr-1"></i> ระดับการศึกษา</label>
+                            <select id="report-room-select" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                                 <option value="">-- เลือกระดับการศึกษา --</option>
                             </select>
                         </div>
                         <div>
-                            <label for="report-start-date" class="block text-base font-medium mb-1 text-muted">วันที่เริ่มต้น</label>
-                            <input type="date" id="report-start-date" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                            <label for="report-start-date" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-calendar-alt mr-1"></i> วันที่เริ่มต้น</label>
+                            <input type="date" id="report-start-date" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                         </div>
                         <div>
-                            <label for="report-end-date" class="block text-base font-medium mb-1 text-muted">วันที่สิ้นสุด</label>
-                            <input type="date" id="report-end-date" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                            <label for="report-end-date" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-calendar-alt mr-1"></i> วันที่สิ้นสุด</label>
+                            <input type="date" id="report-end-date" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                         </div>
                     </div>
-                    <button id="load-report-btn" class="w-full py-3 rounded-xl font-bold text-lg transition-colors bg-primary text-white hover:bg-indigo-700 btn-shadow">
-                        <span id="load-report-text">🔍 ดูรายงานการพบกลุ่ม</span>
+                    <button id="load-report-btn" class="w-full py-3 rounded-xl font-bold text-base md:text-lg transition-colors bg-primary text-white hover:bg-indigo-700 btn-shadow">
+                        <span id="load-report-text"><i class="fas fa-magnifying-glass mr-2"></i> ดูรายงานการพบกลุ่ม</span>
                         <div id="load-report-loading" class="loading-spinner mx-auto hidden"></div>
                     </button>
                 </div>
 
                 <div id="report-results" class="hidden">
                     <div class="modern-card mb-6">
-                        <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">สรุปผลการพบกลุ่ม</h2>
+                        <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-table mr-2"></i> สรุปผลการพบกลุ่ม</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="p-4 rounded-xl text-center bg-indigo-50/70 border-l-4 border-primary shadow-inner">
-                                <p class="text-base font-medium text-muted">ผู้เรียนทุกระดับ</p>
-                                <p id="total-students" class="text-2xl font-extrabold mt-1 text-primary">0</p>
+                                <p class="text-sm md:text-base font-medium text-muted">ผู้เรียนทุกระดับ</p>
+                                <p id="total-students" class="text-2xl md:text-3xl font-extrabold mt-1 text-primary">0</p>
                             </div>
                             <div class="p-4 rounded-xl text-center bg-emerald-50/70 border-l-4 border-success shadow-inner">
-                                <p class="text-base font-medium text-muted">มาพบกลุ่ม</p>
-                                <p id="attended-students" class="text-2xl font-extrabold mt-1 text-success">0</p>
+                                <p class="text-sm md:text-base font-medium text-muted">มาพบกลุ่ม</p>
+                                <p id="attended-students" class="text-2xl md:text-3xl font-extrabold mt-1 text-success">0</p>
                             </div>
                             <div class="p-4 rounded-xl text-center bg-red-50/70 border-l-4 border-danger shadow-inner">
-                                <p class="text-base font-medium text-muted">ไม่มาพบกลุ่ม</p>
-                                <p id="absent-students" class="text-2xl font-extrabold mt-1 text-danger">0</p>
+                                <p class="text-sm md:text-base font-medium text-muted">ไม่มาพบกลุ่ม</p>
+                                <p id="absent-students" class="text-2xl md:text-3xl font-extrabold mt-1 text-danger">0</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="modern-card">
                         <div class="flex flex-wrap justify-between items-center mb-4">
-                            <h2 class="text-xl md:text-2xl font-bold text-primary">รายละเอียดการมาพบกลุ่ม</h2>
+                            <h2 class="text-lg md:text-xl font-bold text-primary"><i class="fas fa-list-check mr-2"></i> รายละเอียดการมาพบกลุ่ม</h2>
                             <div class="flex flex-wrap gap-2 mt-4 md:mt-0">
-                                <button id="export-excel-btn" class="px-4 py-2 rounded-xl font-bold transition-colors text-base bg-success text-white hover:bg-emerald-700 btn-shadow">
-                                    📥 ส่งออก Excel
+                                <button id="export-excel-btn" class="px-4 py-2 rounded-xl font-medium transition-colors text-sm md:text-base bg-success text-white hover:bg-emerald-700 btn-shadow">
+                                    <i class="fas fa-file-excel mr-2"></i> ส่งออก Excel
                                 </button>
-                                <button id="delete-attendance-btn" class="px-4 py-2 rounded-xl font-bold transition-colors text-base bg-danger text-white hover:bg-red-700 btn-shadow">
-                                    🗑️ ลบข้อมูล
+                                <button id="delete-attendance-btn" class="px-4 py-2 rounded-xl font-medium transition-colors text-sm md:text-base bg-danger text-white hover:bg-red-700 btn-shadow">
+                                    <i class="fas fa-trash-alt mr-2"></i> ลบข้อมูล
                                 </button>
                             </div>
                         </div>
 
                         <div class="overflow-x-auto rounded-xl border border-2 border-gray-200">
-                            <table id="report-table" class="w-full text-left report-table">
+                            <table id="report-table" class="w-full text-left report-table text-sm md:text-base"> 
                                 <thead>
-                                    <tr class="bg-indigo-50/70 text-primary font-extrabold">
-                                        <th class="px-4 py-2 text-base border-b-2 border-primary">ลำดับ</th>
-                                        <th class="px-4 py-2 text-base border-b-2 border-primary">ชื่อ-นามสกุล</th>
-                                        <th class="px-4 py-2 text-base border-b-2 border-primary">ระดับการศึกษา</th>
-                                        <th class="px-4 py-2 text-center text-base border-b-2 border-primary">สถานะ</th>
-                                        <th class="px-4 py-2 text-center text-base border-b-2 border-primary">วันที่</th>
-                                        <th class="px-4 py-2 text-center text-base border-b-2 border-primary">เวลา</th>
+                                    <tr class="bg-indigo-50/70 text-primary font-bold">
+                                        <th class="px-3 py-3 text-xs md:text-sm border-b-2 border-primary">ลำดับ</th> 
+                                        <th class="px-3 py-3 text-xs md:text-sm border-b-2 border-primary">ชื่อ-นามสกุล</th>
+                                        <th class="px-3 py-3 text-xs md:text-sm border-b-2 border-primary">ระดับการศึกษา</th>
+                                        <th class="px-3 py-3 text-center text-xs md:text-sm border-b-2 border-primary">สถานะ</th>
+                                        <th class="px-3 py-3 text-center text-xs md:text-sm border-b-2 border-primary">วันที่</th>
+                                        <th class="px-3 py-3 text-center text-xs md:text-sm border-b-2 border-primary">เวลา</th>
                                     </tr>
                                 </thead>
                                 <tbody id="report-table-body">
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -476,44 +506,70 @@
 
             <div id="list-section" class="hidden">
                 <div class="modern-card mb-6">
-                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">กรองรายชื่อผู้เรียน</h2>
-                    <select id="list-room-filter" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-lg">
+                    <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-layer-group mr-2"></i> กรองรายชื่อผู้เรียน</h2>
+                    <select id="list-room-filter" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                         <option value="">ทุกระดับชั้น</option>
                     </select>
                 </div>
 
                 <div class="modern-card">
-                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">รายชื่อผู้เรียนที่บันทึกไว้ (<span id="face-count">0</span>)</h2>
+                    <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-address-book mr-2"></i> รายชื่อผู้เรียนที่บันทึกไว้ (<span id="face-count">0</span>)</h2>
                     <div id="faces-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                        <p class="col-span-full text-center py-8 text-base text-muted">กำลังโหลดข้อมูล...</p>
+                        <p class="col-span-full text-center py-8 text-base text-muted font-medium"><i class="fas fa-sync-alt fa-spin mr-2"></i> กำลังโหลดข้อมูล...</p>
                     </div>
                 </div>
             </div>
 
             <div id="rooms-section" class="hidden">
                 <div class="modern-card mb-6">
-                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">เพิ่มระดับการศึกษาใหม่</h2>
+                    <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-plus-circle mr-2"></i> เพิ่มระดับการศึกษาใหม่</h2>
                     <form id="add-room-form" class="space-y-4">
                         <div>
-                            <label for="new-room-name" class="block text-base font-medium mb-1 text-muted">ชื่อระดับการศึกษา</label>
-                            <input type="text" id="new-room-name" required placeholder="เช่น: มัธยมศึกษาตอนปลาย" class="w-full px-4 py-2 border border-gray-300 rounded-xl text-base">
+                            <label for="new-room-name" class="block text-sm md:text-base font-medium mb-1 text-muted"><i class="fas fa-tag mr-1"></i> ชื่อระดับการศึกษา</label>
+                            <input type="text" id="new-room-name" required placeholder="เช่น: มัธยมศึกษาตอนปลาย" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-base md:text-lg">
                         </div>
-                        <button type="submit" id="add-room-button" class="w-full py-3 rounded-xl font-bold transition-colors text-lg bg-success text-white hover:bg-emerald-700 btn-shadow">
-                            <span id="add-room-button-text">➕ เพิ่มระดับการศึกษา</span>
+                        <button type="submit" id="add-room-button" class="w-full py-3 rounded-xl font-bold transition-colors text-base md:text-lg bg-success text-white hover:bg-emerald-700 btn-shadow">
+                            <span id="add-room-button-text"><i class="fas fa-plus mr-2"></i> เพิ่มระดับการศึกษา</span>
                             <div id="add-room-loading" class="loading-spinner mx-auto hidden"></div>
                         </button>
                     </form>
                 </div>
 
                 <div class="modern-card">
-                    <h2 class="text-xl md:text-2xl font-bold mb-4 text-primary">รายชื่อระดับการศึกษา (<span id="room-count">0</span>)</h2>
+                    <h2 class="text-lg md:text-xl font-bold mb-4 text-primary"><i class="fas fa-list-ul mr-2"></i> รายชื่อระดับการศึกษา (<span id="room-count">0</span>)</h2>
                     <div id="rooms-list" class="space-y-3">
-                        <p class="text-center py-8 text-base text-muted">กำลังโหลดข้อมูล...</p>
+                        <p class="text-center py-8 text-base text-muted font-medium"><i class="fas fa-sync-alt fa-spin mr-2"></i> กำลังโหลดข้อมูล...</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        // Example function (you would integrate this logic into your Face API loading process)
+        function updateLoadingProgress(progress, text = "กำลังเตรียมระบบจดจำใบหน้า...") {
+            const loadingTextElement = document.getElementById('loading-text');
+            const loadingProgressElement = document.getElementById('loading-progress');
+            const progressBarElement = document.getElementById('loading-progress-bar');
+        
+            if (loadingTextElement) {
+                loadingTextElement.textContent = text;
+            }
+            if (loadingProgressElement) {
+                loadingProgressElement.textContent = `${Math.round(progress)}%`;
+            }
+            if (progressBarElement) {
+                progressBarElement.style.width = `${progress}%`;
+            }
+        }
+        
+        // Example: Call updateLoadingProgress(5) at start, updateLoadingProgress(30) after loading the first model, etc.
+        // updateLoadingProgress(10, "กำลังโหลดโมเดล..."); 
+
+        // NOTE: The rest of your original JavaScript logic (Face API initialization, tab switching, form handling) 
+        // should be placed here or in a separate script file to complete the functionality.
+    </script>
+</body>
+</html>
   <script>
     const defaultConfig = {
       background_color: "#f0f9ff",
