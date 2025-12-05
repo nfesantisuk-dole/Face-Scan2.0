@@ -506,10 +506,11 @@
 
     document.getElementById('confirm-delete-cancel').addEventListener('click', hideConfirmDeleteModal);
 
-    document.getElementById('confirm-delete-confirm').addEventListener('click', async () => {
+   document.getElementById('confirm-delete-confirm').addEventListener('click', async () => {
       if (pendingDeleteAction) {
-        hideConfirmDeleteModal();
-        await pendingDeleteAction();
+        const actionToRun = pendingDeleteAction; // 1. เก็บคำสั่งไว้ในตัวแปรชั่วคราวก่อน
+        hideConfirmDeleteModal();                // 2. ปิดกล่อง (ซึ่งจะไปล้างค่า pendingDeleteAction เป็น null)
+        await actionToRun();                     // 3. รันคำสั่งที่เก็บไว้ (ตอนนี้จะทำงานได้แล้ว)
       }
     });
    async function checkAvailableCameras() {
@@ -820,27 +821,43 @@
     }
 
     function updateRoomSelects() {
-      const selects = [
-        document.getElementById('student-room'),
-        document.getElementById('camera-student-room'),
-        document.getElementById('attendance-room-select'),
-        document.getElementById('list-room-filter'),
-        document.getElementById('report-room-select')
+      // กำหนดค่าหัวข้อตัวเลือกแรกของแต่ละเมนู
+      const selectConfigs = [
+        { id: 'student-room', label: '-- เลือกระดับชั้น --' },
+        { id: 'camera-student-room', label: '-- เลือกระดับชั้น --' },
+        { id: 'attendance-room-select', label: '-- กรุณาเลือก --' },
+        { id: 'list-room-filter', label: 'ระดับชั้นทั้งหมด' }, // เพิ่มตัวเลือก "ทั้งหมด" ให้เมนูรายชื่อ
+        { id: 'report-room-select', label: '-- เลือกระดับชั้น --' }
       ];
-      selects.forEach((select, index) => {
+
+      selectConfigs.forEach(config => {
+        const select = document.getElementById(config.id);
         if(!select) return;
+        
         const currentValue = select.value;
-        while (select.options.length > 1) {
-          select.remove(1);
-        }
+        
+        // ล้างตัวเลือกเดิมทั้งหมด
+        select.innerHTML = '';
+        
+        // สร้างตัวเลือกแรก (Value ว่าง = ทั้งหมด หรือ ยังไม่เลือก)
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = config.label;
+        select.appendChild(defaultOption);
+
+        // เพิ่มรายชื่อห้องจากระบบ
         ROOMS.forEach(room => {
           const option = document.createElement('option');
           option.value = room;
           option.textContent = room;
           select.appendChild(option);
         });
-        if (ROOMS.includes(currentValue)) {
+
+        // คืนค่าเดิมที่เลือกไว้ (ถ้ามี)
+        if (currentValue && ROOMS.includes(currentValue)) {
           select.value = currentValue;
+        } else {
+          select.value = ""; // ถ้าไม่มีให้กลับไปที่ตัวเลือกแรก
         }
       });
     }
@@ -1142,9 +1159,11 @@
     function createFaceCard(face) {
       const card = document.createElement('div');
       card.dataset.faceId = face.id;
-      // UI Update
+      
       card.className = 'relative rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all bg-white group';
       
+      // แก้ไข: ลบ opacity-0 group-hover:opacity-100 ออก เพื่อให้ปุ่มแสดงตลอดเวลา (แก้ปัญหากดบนมือถือยาก)
+      // แก้ไข: เพิ่ม z-10 เพื่อให้ปุ่มอยู่ชั้นบนสุดแน่นอน
       card.innerHTML = `
         <div class="relative pt-[100%]">
              <img src="${face.image_data}" alt="${face.name}" class="absolute top-0 left-0 w-full h-full object-cover">
@@ -1153,21 +1172,26 @@
           <p class="font-bold text-gray-800 text-sm truncate text-center">${face.name}</p>
           <p class="text-xs text-gray-500 text-center truncate">${face.room || '-'}</p>
         </div>
-        <button class="delete-btn absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow opacity-0 group-hover:opacity-100 transition-opacity">
-            <i class="fas fa-times text-xs"></i>
+        <button class="delete-btn absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 transition-all z-10">
+            <i class="fas fa-times text-sm"></i>
         </button>
       `;
+
       const deleteBtn = card.querySelector('.delete-btn');
       
-      deleteBtn.addEventListener('click', async () => {
-        // UI Friendly Confirm
+      // แก้ไข: เพิ่ม parameter (e) และ e.stopPropagation()
+      deleteBtn.addEventListener('click', async (e) => {
+        e.stopPropagation(); // หยุดไม่ให้การกดส่งผลไปที่ตัวการ์ด (ป้องกันบั๊ก)
+        e.preventDefault();  // ป้องกันพฤติกรรมเริ่มต้น (ถ้ามี)
+
         const faceName = face.name;
         showConfirmDeleteModal(`ต้องการลบ "${faceName}" ใช่หรือไม่?`, async () => {
             const success = await deleteFace(face.id);
             if (success) showToast(`ลบข้อมูล "${faceName}" สำเร็จ`, 'success');
         });
-    });
-    return card;
+      });
+      
+      return card;
     }
 
     function updateFaceCount() {
