@@ -61,16 +61,16 @@
             transition: transform 0.2s ease;
         }
 
-        /* Nav Horizontal Scroll (Hide Scrollbar but keep functionality) */
+        /* Nav Horizontal Scroll */
         .nav-scroll {
             overflow-x: auto;
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
             padding-bottom: 5px;
         }
         .nav-scroll::-webkit-scrollbar {
-            display: none; /* Chrome/Safari */
+            display: none;
         }
 
         /* Modern Inputs */
@@ -136,7 +136,9 @@
         }
     </style>
 </head>
-<body class="text-gray-800 min-h-screen pb-20"> <div id="login-section" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm transition-all duration-500" style="display: none; opacity: 0;">
+<body class="text-gray-800 min-h-screen pb-20"> 
+    
+    <div id="login-section" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm transition-all duration-500" style="display: none; opacity: 0;">
         <div class="modern-card p-8 w-full max-w-sm text-center shadow-2xl animate-[scaleIn_0.3s_ease-out]">
             <div class="mx-auto w-16 h-16 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center mb-6 text-2xl shadow-inner">
                 <i class="fas fa-user-shield"></i>
@@ -149,7 +151,6 @@
                     <input type="password" id="admin-password" class="input-modern w-full px-4 py-3 rounded-xl text-center tracking-widest text-lg" placeholder="รหัสผ่าน" required autofocus>
                     <i class="fas fa-lock absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400"></i>
                 </div>
-                
                 <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl hover:from-primary-700 hover:to-primary-800 transition-all transform active:scale-95">
                     เข้าสู่ระบบ
                 </button>
@@ -157,6 +158,7 @@
             <p id="login-error" class="text-red-500 text-sm mt-3 hidden"><i class="fas fa-exclamation-circle mr-1"></i> รหัสผ่านไม่ถูกต้อง</p>
         </div>
     </div>
+
     <div id="loading-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white/90 backdrop-blur-md transition-opacity duration-500">
         <div class="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center max-w-sm w-[90%] border border-gray-100">
             <div class="loader-ring mb-6"></div>
@@ -177,9 +179,7 @@
                 <h2 class="text-2xl font-bold text-gray-800">ตั้งค่าระบบ</h2>
                 <p class="text-gray-500 text-sm mt-2">กรุณาระบุ URL Web App (Google Apps Script)</p>
             </div>
-            
             <input type="text" id="gas-url-input" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-sm mb-4" placeholder="https://script.google.com/..." value="">
-            
             <button id="save-url-btn" class="w-full py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl hover:from-primary-700 hover:to-primary-800 transition-all">
                 บันทึกการตั้งค่า
             </button>
@@ -202,26 +202,26 @@
     </div>
 
     <div id="app" class="max-w-7xl mx-auto p-4 md:p-6" style="display: none;">
-        
         <header class="flex flex-col md:flex-row justify-between items-center mb-8 relative z-10">
-    <div class="text-center md:text-left mb-4 md:mb-0">
-        <h1 id="app-title" class="text-2xl md:text-3xl font-extrabold text-white drop-shadow-md tracking-tight">
-            <span class="opacity-90">ระบบเช็คชื่อ</span> ศกร.ตำบลสันติสุข
-        </h1>
-        <p class="text-primary-100 text-sm md:text-base font-light mt-1">
-            <i class="fas fa-camera-retro mr-1"></i> ระบบจดจำใบหน้า AI Face Scan
-        </p>
-    </div>
+            <div class="text-center md:text-left mb-4 md:mb-0">
+                <h1 id="app-title" class="text-2xl md:text-3xl font-extrabold text-white drop-shadow-md tracking-tight">
+                    <span class="opacity-90">ระบบเช็คชื่อ</span> ศกร.ตำบลสันติสุข
+                </h1>
+                <p class="text-primary-100 text-sm md:text-base font-light mt-1">
+                    <i class="fas fa-camera-retro mr-1"></i> ระบบจดจำใบหน้า AI Face Scan
+                </p>
+            </div>
 
-    <div class="flex gap-2">
-        <button id="change-url-btn" class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-all border border-white/20">
-            <i class="fas fa-sliders-h mr-2"></i>ตั้งค่า
-        </button>
-        <button id="logout-btn" class="px-4 py-2 bg-red-500/90 hover:bg-red-600 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-all shadow-sm border border-white/10">
-            <i class="fas fa-sign-out-alt mr-2"></i>ออก
-        </button>
-    </div>
-</header>
+            <div class="flex gap-2">
+                <button id="change-url-btn" class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-all border border-white/20">
+                    <i class="fas fa-sliders-h mr-2"></i>ตั้งค่า
+                </button>
+                <button id="logout-btn" class="px-4 py-2 bg-red-500/90 hover:bg-red-600 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-all shadow-sm border border-white/10">
+                    <i class="fas fa-sign-out-alt mr-2"></i>ออก
+                </button>
+            </div>
+        </header>
+        
         <nav class="mb-8">
             <div class="nav-scroll flex gap-3 pb-2 px-1">
                 <button id="main-tab-attendance" class="main-tab-button active flex-shrink-0 px-5 py-3 rounded-2xl font-medium text-sm md:text-base flex items-center gap-2 transition-all">
@@ -261,7 +261,8 @@
                         <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-black aspect-video border-4 border-white">
                             <video id="attendance-camera-video" class="w-full h-full object-cover" autoplay playsinline muted></video>
                             <canvas id="attendance-camera-canvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
-                            <div class="scanner-line"></div> <div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
+                            <div class="scanner-line"></div> 
+                            <div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
                                 <div id="attendance-summary" class="bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-medium border border-white/20">
                                     <span id="attendance-count"><i class="fas fa-search mr-2"></i>รอตรวจจับ...</span>
                                 </div>
@@ -293,7 +294,7 @@
                         <div id="detected-list" class="flex-1 overflow-y-auto space-y-3 pr-1 max-h-[400px]">
                             <p class="text-center py-10 text-gray-400 text-sm">รอการเช็คชื่อ...</p>
                         </div>
-                        <button id="save-attendance-btn" disabled class="mt-4 w-full py-3 bg-emerald-500 text-white rounded-xl font-bold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-emerald-600 transition-all">
+                        <button id="save-attendance-btn" disabled class="mt-4 w-full py-3 bg-emerald-500 text-white rounded-xl font-bold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-emerald-600 transition-all hidden">
                             <span id="save-attendance-text"><i class="fas fa-save mr-2"></i> บันทึกข้อมูล</span>
                             <div id="save-attendance-loading" class="hidden loader-ring w-6 h-6 border-2 border-white border-t-transparent mx-auto"></div>
                         </button>
@@ -419,8 +420,7 @@
                                         <th class="p-4">เวลา</th>
                                     </tr>
                                 </thead>
-                                <tbody id="report-table-body" class="divide-y divide-gray-100 text-gray-700">
-                                    </tbody>
+                                <tbody id="report-table-body" class="divide-y divide-gray-100 text-gray-700"></tbody>
                             </table>
                         </div>
                     </div>
@@ -432,8 +432,7 @@
                     <h2 class="text-xl font-bold text-white drop-shadow-md">รายชื่อทั้งหมด (<span id="face-count">0</span>)</h2>
                     <select id="list-room-filter" class="input-modern px-4 py-2 rounded-xl text-sm w-40"></select>
                 </div>
-                <div id="faces-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    </div>
+                <div id="faces-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"></div>
             </div>
 
             <div id="rooms-section" class="hidden animate-[fadeIn_0.3s_ease-out]">
@@ -449,8 +448,7 @@
                 </div>
                 <div class="modern-card p-0 overflow-hidden">
                     <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-700">รายชื่อระดับชั้น (<span id="room-count">0</span>)</div>
-                    <div id="rooms-list" class="divide-y divide-gray-100">
-                        </div>
+                    <div id="rooms-list" class="divide-y divide-gray-100"></div>
                 </div>
             </div>
 
@@ -465,8 +463,6 @@
     </footer>
 
     <script>
-        // --- KEEPING YOUR ORIGINAL JS LOGIC INTACE ---
-        // UI Helpers for new Loading Overlay
         function updateLoadingProgress(progress, text) {
              const loadingText = document.getElementById('loading-text');
              const loadingBar = document.getElementById('loading-progress-bar');
@@ -476,1812 +472,1542 @@
              if(loadingNum) loadingNum.innerText = `${Math.round(progress)}%`;
         }
 
-        // --- PASTE YOUR ORIGINAL JAVASCRIPT HERE ---
-        // (For brevity in this display, assume all your original script logic follows here)
-        // Ensure you copy EVERYTHING from your original <script> tag starting with const defaultConfig...
-    </script>
-    
-    <script>
-    const defaultConfig = {
-      background_color: "#f0f9ff",
-      card_color: "#ffffff",
-      text_color: "#1e293b",
-      primary_button_color: "#3b82f6",
-      secondary_button_color: "#ef4444",
-      app_title: "ระบบเช็คชื่อการพบกลุ่ม ศกร.ระดับตำบลสันติสุข (Face Scan)",
-      register_button_text: "บันทึกข้อมูลนักศึกษา",
-      attendance_button_text: "บันทึกการพบกลุ่ม",
-      font_family: "Sarabun, sans-serif",
-      font_size: 16
-    };
-    let ROOMS = [];
-    let storedFaces = [];
-    let registerCameraStream = null;
-    let attendanceCameraStream = null;
-    let currentMainTab = 'attendance';
-    let currentRegisterTab = 'upload';
-    let pendingImageData = null;
-    let capturedImageData = null;
-    let currentRegisterFacingMode = 'user';
-    let currentAttendanceFacingMode = 'user';
-    let availableCameras = [];
-    let GAS_URL = localStorage.getItem('gas_url') || 'https://script.google.com/macros/s/AKfycbzcROiJNZ-5AQbDYbPs_l2-hoKurM5Cxpt_knt_ufYGp9jOfOGY9qlyMAdiMynmHAD7oA/exec';
-    let modelsLoaded = false;
-    let faceDescriptors = [];
-    let attendanceDetectionInterval = null;
-    let detectedStudents = new Map();
-    let selectedAttendanceRoom = '';
-    let selectedListRoomFilter = '';
-    let pendingDeleteAction = null;
+        const defaultConfig = {
+            background_color: "#f0f9ff",
+            card_color: "#ffffff",
+            text_color: "#1e293b",
+            primary_button_color: "#3b82f6",
+            secondary_button_color: "#ef4444",
+            app_title: "ระบบเช็คชื่อการพบกลุ่ม ศกร.ระดับตำบลสันติสุข (Face Scan)",
+            register_button_text: "บันทึกข้อมูลนักศึกษา",
+            attendance_button_text: "บันทึกการพบกลุ่ม",
+            font_family: "Sarabun, sans-serif",
+            font_size: 16
+        };
 
-    // --- Variables for TTS (Text-to-Speech) ---
-    let isSoundEnabled = true;
-    let spokenStudents = new Map(); // Map to store cooldown timestamp
-    const SPEAK_COOLDOWN = 10000;
-    // 10 seconds cooldown
-// --- LOGIN CONFIG ---
-    const ADMIN_PASSWORD = "1250240004"; // <<< แก้ไขรหัสผ่านที่ต้องการตรงนี้
-    // --------------------
+        let ROOMS = [];
+        let storedFaces = [];
+        let registerCameraStream = null;
+        let attendanceCameraStream = null;
+        let currentMainTab = 'attendance';
+        let currentRegisterTab = 'upload';
+        let pendingImageData = null;
+        let capturedImageData = null;
+        let currentRegisterFacingMode = 'user';
+        let currentAttendanceFacingMode = 'user';
+        let availableCameras = [];
+        let GAS_URL = localStorage.getItem('gas_url') || 'https://script.google.com/macros/s/AKfycbzcROiJNZ-5AQbDYbPs_l2-hoKurM5Cxpt_knt_ufYGp9jOfOGY9qlyMAdiMynmHAD7oA/exec';
+        let modelsLoaded = false;
+        let faceDescriptors = [];
+        let attendanceDetectionInterval = null;
+        let detectedStudents = new Map();
+        let selectedAttendanceRoom = '';
+        let selectedListRoomFilter = '';
+        let pendingDeleteAction = null;
 
-    function checkLogin() {
-        const input = document.getElementById('admin-password');
-        const errorMsg = document.getElementById('login-error');
-        const loginSection = document.getElementById('login-section');
-        const appSection = document.getElementById('app');
+        let isSoundEnabled = true;
+        let spokenStudents = new Map(); 
+        const SPEAK_COOLDOWN = 10000;
+        
+        // [เพิ่มใหม่] ตัวแปรกันซ้ำสำหรับการบันทึกอัตโนมัติ
+        let autoSavedSet = new Set(); 
 
-        if (input.value === ADMIN_PASSWORD) {
-            // รหัสผ่านถูกต้อง
-            errorMsg.classList.add('hidden');
-            
-            // Effect ปิดหน้า Login
-            loginSection.style.opacity = '0';
-            setTimeout(() => {
-                loginSection.style.display = 'none';
-                appSection.style.display = 'block'; // แสดงหน้า App หลัก
-                
-                // เริ่มโหลดข้อมูลหลังจาก Login ผ่านแล้ว
-                if (!GAS_URL || GAS_URL === 'null') {
-                    showConfigModal();
-                } else {
-                     // เรียกโหลดข้อมูลเมื่อ Login ผ่าน (ย้ายมาจาก init เดิม)
-                    fetchRooms();
-                    fetchFaces();
+        const ADMIN_PASSWORD = "1250240004";
+
+        function checkLogin() {
+            const input = document.getElementById('admin-password');
+            const errorMsg = document.getElementById('login-error');
+            const loginSection = document.getElementById('login-section');
+            const appSection = document.getElementById('app');
+            if (input.value === ADMIN_PASSWORD) {
+                errorMsg.classList.add('hidden');
+                loginSection.style.opacity = '0';
+                setTimeout(() => {
+                    loginSection.style.display = 'none';
+                    appSection.style.display = 'block'; 
+                    if (!GAS_URL || GAS_URL === 'null') {
+                        showConfigModal();
+                    } else {
+                        fetchRooms();
+                        fetchFaces();
+                    }
+                }, 500);
+                showToast('เข้าสู่ระบบสำเร็จ', 'success');
+            } else {
+                errorMsg.classList.remove('hidden');
+                input.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+                input.value = '';
+                input.focus();
+                setTimeout(() => {
+                    input.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+                }, 2000);
+            }
+        }
+
+        function showConfirmDeleteModal(message, onConfirm) {
+            document.getElementById('confirm-delete-message').textContent = message;
+            document.getElementById('confirm-delete-modal').style.display = 'flex';
+            pendingDeleteAction = onConfirm;
+        }
+
+        function hideConfirmDeleteModal() {
+            document.getElementById('confirm-delete-modal').style.display = 'none';
+            pendingDeleteAction = null;
+        }
+
+        document.getElementById('confirm-delete-cancel').addEventListener('click', hideConfirmDeleteModal);
+
+        document.getElementById('confirm-delete-confirm').addEventListener('click', async () => {
+            if (pendingDeleteAction) {
+                const actionToRun = pendingDeleteAction; 
+                hideConfirmDeleteModal();                
+                await actionToRun();                     
+            }
+        });
+
+        async function checkAvailableCameras() {
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+                    return false; 
                 }
-            }, 500);
-            
-            showToast('เข้าสู่ระบบสำเร็จ', 'success');
-        } else {
-            // รหัสผ่านผิด
-            errorMsg.classList.remove('hidden');
-            input.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-            input.value = '';
-            input.focus();
-            setTimeout(() => {
-                input.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-            }, 2000);
-        }
-    }
-    // Confirm Delete Modal Functions
-    function showConfirmDeleteModal(message, onConfirm) {
-      document.getElementById('confirm-delete-message').textContent = message;
-      document.getElementById('confirm-delete-modal').style.display = 'flex';
-      pendingDeleteAction = onConfirm;
-    }
-
-    function hideConfirmDeleteModal() {
-      document.getElementById('confirm-delete-modal').style.display = 'none';
-      pendingDeleteAction = null;
-    }
-
-    document.getElementById('confirm-delete-cancel').addEventListener('click', hideConfirmDeleteModal);
-
-   document.getElementById('confirm-delete-confirm').addEventListener('click', async () => {
-      if (pendingDeleteAction) {
-        const actionToRun = pendingDeleteAction; // 1. เก็บคำสั่งไว้ในตัวแปรชั่วคราวก่อน
-        hideConfirmDeleteModal();                // 2. ปิดกล่อง (ซึ่งจะไปล้างค่า pendingDeleteAction เป็น null)
-        await actionToRun();                     // 3. รันคำสั่งที่เก็บไว้ (ตอนนี้จะทำงานได้แล้ว)
-      }
-    });
-   async function checkAvailableCameras() {
-      try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-          console.warn("enumerateDevices() not supported.");
-          return false; 
-        }
-        // ต้องรอให้ permission ผ่านก่อนถึงจะเห็น Label และจำนวนที่แท้จริง
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter(device => device.kind === 'videoinput');
-        console.log("Found cameras:", videoDevices.length);
-        return videoDevices.length > 1; // คืนค่า True ถ้ามีมากกว่า 1 ตัว
-      } catch (error) {
-        console.error('Error checking cameras:', error);
-        return false;
-      }
-    }
-
-    // 2. ฟังก์ชันเปิดกล้อง (สำหรับลงทะเบียน) - แก้ไขให้เช็คปุ่มสลับกล้องหลังจากเปิดสำเร็จ
-    async function startRegisterCamera() {
-      try {
-        const constraints = {
-          video: {
-            facingMode: currentRegisterFacingMode, // 'user' หรือ 'environment'
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          },
-          audio: false
-        };
-        
-        // หยุด Stream เก่าก่อน (ถ้ามี)
-        if (registerCameraStream) {
-            registerCameraStream.getTracks().forEach(track => track.stop());
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                return videoDevices.length > 1;
+            } catch (error) {
+                console.error('Error checking cameras:', error);
+                return false;
+            }
         }
 
-        registerCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-        const video = document.getElementById('register-camera-video');
-        video.srcObject = registerCameraStream;
-        
-        await video.play();
-        
-        // ปรับ UI ปุ่ม
-        document.getElementById('start-register-camera-btn').classList.add('hidden');
-        document.getElementById('capture-register-btn').classList.remove('hidden');
-        
-        // *** สำคัญ: เช็คจำนวนกล้อง "หลังจาก" ได้รับ Permission แล้ว ***
-        const hasMultipleCameras = await checkAvailableCameras();
-        if (hasMultipleCameras) {
-          document.getElementById('switch-register-camera-btn').classList.remove('hidden');
-        } else {
-          document.getElementById('switch-register-camera-btn').classList.add('hidden');
-        }
-        
-        video.onloadedmetadata = () => {
-          const canvas = document.getElementById('register-camera-canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-        };
-        
-        showToast('เปิดกล้องสำเร็จ', 'success');
-      } catch (error) {
-        console.error('Camera error:', error);
-        showToast('ไม่สามารถเข้าถึงกล้องได้: ' + error.message, 'error');
-      }
-    }
+        async function startRegisterCamera() {
+            try {
+                const constraints = {
+                    video: {
+                        facingMode: currentRegisterFacingMode,
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                };
+                if (registerCameraStream) {
+                    registerCameraStream.getTracks().forEach(track => track.stop());
+                }
 
-    // 3. ฟังก์ชันสลับกล้อง (สำหรับลงทะเบียน)
-    async function switchRegisterCamera() {
-      // สลับค่า facingMode
-      currentRegisterFacingMode = (currentRegisterFacingMode === 'user') ? 'environment' : 'user';
-      showToast(`กำลังสลับกล้องเป็น: ${currentRegisterFacingMode === 'user' ? 'กล้องหน้า' : 'กล้องหลัง'}...`);
-      await startRegisterCamera(); // เรียกเปิดกล้องใหม่ด้วย Mode ใหม่
-    }
-
-    // 4. ฟังก์ชันเปิดกล้อง (สำหรับเช็คชื่อ) - แก้ไขให้เช็คปุ่มสลับกล้องหลังจากเปิดสำเร็จ
-    async function startAttendanceCamera() {
-      if (!selectedAttendanceRoom) {
-        showToast('กรุณาเลือกระดับการศึกษาก่อน', 'error');
-        return;
-      }
-
-      try {
-        const constraints = {
-          video: {
-            facingMode: currentAttendanceFacingMode,
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          },
-          audio: false
-        };
-        
-        // หยุด Stream เก่าก่อน
-        if (attendanceCameraStream) {
-            attendanceCameraStream.getTracks().forEach(track => track.stop());
+                registerCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const video = document.getElementById('register-camera-video');
+                video.srcObject = registerCameraStream;
+                await video.play();
+                
+                document.getElementById('start-register-camera-btn').classList.add('hidden');
+                document.getElementById('capture-register-btn').classList.remove('hidden');
+                const hasMultipleCameras = await checkAvailableCameras();
+                if (hasMultipleCameras) {
+                    document.getElementById('switch-register-camera-btn').classList.remove('hidden');
+                } else {
+                    document.getElementById('switch-register-camera-btn').classList.add('hidden');
+                }
+                
+                video.onloadedmetadata = () => {
+                    const canvas = document.getElementById('register-camera-canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                };
+                
+                showToast('เปิดกล้องสำเร็จ', 'success');
+            } catch (error) {
+                console.error('Camera error:', error);
+                showToast('ไม่สามารถเข้าถึงกล้องได้: ' + error.message, 'error');
+            }
         }
 
-        attendanceCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-        const video = document.getElementById('attendance-camera-video');
-        video.srcObject = attendanceCameraStream;
-        
-        await video.play();
-        
-        // ปรับ UI ปุ่ม
-        document.getElementById('start-attendance-camera-btn').classList.add('hidden');
-        document.getElementById('stop-attendance-camera-btn').classList.remove('hidden');
-        document.getElementById('toggle-sound-btn').classList.remove('hidden');
-        
-        // *** สำคัญ: เช็คจำนวนกล้อง "หลังจาก" ได้รับ Permission แล้ว ***
-        const hasMultipleCameras = await checkAvailableCameras();
-        if (hasMultipleCameras) {
-          document.getElementById('switch-attendance-camera-btn').classList.remove('hidden');
-        } else {
-           document.getElementById('switch-attendance-camera-btn').classList.add('hidden');
+        async function switchRegisterCamera() {
+            currentRegisterFacingMode = (currentRegisterFacingMode === 'user') ? 'environment' : 'user';
+            stopRegisterCamera();
+            await startRegisterCamera();
         }
-        
-        video.onloadedmetadata = () => {
-          const canvas = document.getElementById('attendance-camera-canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          startAttendanceDetection();
-        };
-        
-        showToast('เปิดกล้องสำเร็จ - เริ่มตรวจจับ', 'success');
-      } catch (error) {
-        console.error('Camera error:', error);
-        showToast('ไม่สามารถเข้าถึงกล้องได้: ' + error.message, 'error');
-      }
-    }
 
-    // 5. ฟังก์ชันสลับกล้อง (สำหรับเช็คชื่อ)
-    async function switchAttendanceCamera() {
-      // หยุดการตรวจจับชั่วคราว
-      stopAttendanceDetection();
-      
-      // สลับค่า facingMode
-      currentAttendanceFacingMode = (currentAttendanceFacingMode === 'user') ? 'environment' : 'user';
-      showToast(`กำลังสลับกล้องเป็น: ${currentAttendanceFacingMode === 'user' ? 'กล้องหน้า' : 'กล้องหลัง'}...`);
-      
-      await startAttendanceCamera(); // เรียกเปิดกล้องใหม่
-    }
-    // Load Face-API.js Models
-    async function loadModels() {
-      // Use new UI update function
-      updateLoadingProgress(0, 'กำลังโหลด AI Models...');
-      
-      try {
-        const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model';
-        
-        updateLoadingProgress(20);
-        await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
-        
-        updateLoadingProgress(50);
-        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-        
-        updateLoadingProgress(80);
-        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-        
-        updateLoadingProgress(100, 'โหลดสำเร็จ!');
-        
-        modelsLoaded = true;
-        setTimeout(() => {
-          document.getElementById('loading-overlay').style.display = 'none';
-          
-          // --- แก้ไขตรงนี้: เปลี่ยนจากโชว์ app เป็นโชว์หน้า login ---
-          const loginSection = document.getElementById('login-section');
-          loginSection.style.display = 'flex';
-          // ใช้ setTimeout เล็กน้อยเพื่อให้ transition opacity ทำงาน
-          setTimeout(() => { loginSection.style.opacity = '1'; }, 50);
-          
-          // โฟกัสช่องรหัสผ่าน
-          setTimeout(() => { document.getElementById('admin-password').focus(); }, 100);
-          // --------------------------------------------------------
-          
-        }, 800);
-        return true;
-      } catch (error) {
-        updateLoadingProgress(0, 'Error: ' + error.message);
-        showToast('ไม่สามารถโหลด AI Models ได้', 'error');
-        return false;
-      }
-    }
-
-    // Extract Face Descriptor from Image
-    async function extractFaceDescriptor(imageElement) {
-      try {
-        const detection = await faceapi
-          .detectSingleFace(imageElement)
-          .withFaceLandmarks()
-          .withFaceDescriptor();
-        if (!detection) {
-          return null;
+        function stopRegisterCamera() {
+            if (registerCameraStream) {
+                registerCameraStream.getTracks().forEach(track => track.stop());
+                registerCameraStream = null;
+                const video = document.getElementById('register-camera-video');
+                video.srcObject = null;
+                
+                document.getElementById('start-register-camera-btn').classList.remove('hidden');
+                document.getElementById('switch-register-camera-btn').classList.add('hidden');
+                document.getElementById('capture-register-btn').classList.add('hidden');
+                document.getElementById('save-register-btn').classList.add('hidden');
+                document.getElementById('captured-image-canvas').classList.add('hidden');
+                
+                const canvas = document.getElementById('register-camera-canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                capturedImageData = null;
+            }
         }
-        
-        return detection.descriptor;
-      } catch (error) {
-        console.error('Error extracting face descriptor:', error);
-        return null;
-      }
-    }
 
-    // Compare Face Descriptors
-    function compareFaces(descriptor1, descriptor2, threshold = 0.5) { // Adjusted threshold slightly
-      const distance = faceapi.euclideanDistance(descriptor1, descriptor2);
-      return {
-        match: distance < threshold,
-        distance: distance,
-        confidence: Math.max(0, (1 - distance) * 100).toFixed(1)
-      };
-    }
-
-    // --- Helper Function for TTS ---
-    function speakWelcome(name) {
-        if (!isSoundEnabled) return;
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const text = ` ${name} เช็คชื่อพบกลุ่มแล้ว`; // Shortened for faster feedback
-            const utterance = new SpeechSynthesisUtterance(text);
-            
-            utterance.lang = 'th-TH';
-            utterance.rate = 1.0; // Faster
-            utterance.pitch = 1.0;
-            utterance.volume = 1.0;
-
-            const voices = window.speechSynthesis.getVoices();
-            const thaiVoice = voices.find(v => v.lang.includes('th'));
-            if (thaiVoice) {
-                utterance.voice = thaiVoice;
+        async function startAttendanceCamera() {
+            if (!selectedAttendanceRoom) {
+                showToast('กรุณาเลือกระดับการศึกษาก่อน', 'error');
+                return;
             }
 
-            window.speechSynthesis.speak(utterance);
-        }
-    }
+            try {
+                const constraints = {
+                    video: {
+                        facingMode: currentAttendanceFacingMode,
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                };
+                
+                if (attendanceCameraStream) {
+                    attendanceCameraStream.getTracks().forEach(track => track.stop());
+                }
 
-    // Google Apps Script API Functions
-    async function fetchRooms() {
-      try {
-        const response = await fetch(GAS_URL + '?action=getRooms&t=' + Date.now(), {
-          method: 'GET',
-          mode: 'cors',
-          redirect: 'follow'
-        });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
+                attendanceCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const video = document.getElementById('attendance-camera-video');
+                video.srcObject = attendanceCameraStream;
+                await video.play();
+                
+                document.getElementById('start-attendance-camera-btn').classList.add('hidden');
+                document.getElementById('stop-attendance-camera-btn').classList.remove('hidden');
+                document.getElementById('toggle-sound-btn').classList.remove('hidden');
+                const hasMultipleCameras = await checkAvailableCameras();
+                if (hasMultipleCameras) {
+                    document.getElementById('switch-attendance-camera-btn').classList.remove('hidden');
+                } else {
+                    document.getElementById('switch-attendance-camera-btn').classList.add('hidden');
+                }
+                
+                video.onloadedmetadata = () => {
+                    const canvas = document.getElementById('attendance-camera-canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    startAttendanceDetection();
+                };
+                
+                showToast('เปิดกล้องสำเร็จ - เริ่มตรวจจับ', 'success');
+            } catch (error) {
+                console.error('Camera error:', error);
+                showToast('ไม่สามารถเข้าถึงกล้องได้: ' + error.message, 'error');
+            }
         }
-        
-        const text = await response.text();
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('Response text:', text.substring(0, 200));
-          throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-        }
-        
-        if (result.success) {
-          ROOMS = result.data || [];
-          updateRoomSelects();
-          return true;
-        } else {
-          throw new Error(result.error || 'Unknown error');
-        }
-      } catch (error) {
-        console.error('Fetch Rooms Error:', error);
-        showToast('ไม่สามารถโหลดรายชื่อห้องได้: ' + error.message, 'error');
-        return false;
-      }
-    }
 
-    async function fetchAttendanceReport(room, startDate, endDate) {
-      try {
-        const params = new URLSearchParams({
-          action: 'getAttendance',
-          room: room,
-          t: Date.now()
-        });
-        const response = await fetch(GAS_URL + '?' + params.toString(), {
-          method: 'GET',
-          mode: 'cors',
-          redirect: 'follow'
-        });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
+        async function switchAttendanceCamera() {
+            stopAttendanceDetection();
+            currentAttendanceFacingMode = (currentAttendanceFacingMode === 'user') ? 'environment' : 'user';
+            showToast(`กำลังสลับกล้องเป็น: ${currentAttendanceFacingMode === 'user' ? 'กล้องหน้า' : 'กล้องหลัง'}...`);
+            await startAttendanceCamera();
         }
-        
-        const text = await response.text();
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('Response text:', text.substring(0, 200));
-          throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-        }
-        
-        if (result.success) {
-          let records = result.data || [];
-          
-          if (startDate && endDate) {
-            const start = new Date(startDate);
-            start.setHours(0, 0, 0, 0);
-            const end = new Date(endDate);
-            end.setHours(23, 59, 59, 999);
-            records = records.filter(record => {
-              const recordDate = new Date(record.timestamp);
-              return recordDate >= start && recordDate <= end;
-            });
-          }
-          
-          return records;
-        } else {
-          throw new Error(result.error || 'Unknown error');
-        }
-      } catch (error) {
-        console.error('Fetch Attendance Report Error:', error);
-        showToast('ไม่สามารถโหลดรายงานได้: ' + error.message, 'error');
-        return [];
-      }
-    }
 
-    function updateRoomSelects() {
-      // กำหนดค่าหัวข้อตัวเลือกแรกของแต่ละเมนู
-      const selectConfigs = [
-        { id: 'student-room', label: '-- เลือกระดับชั้น --' },
-        { id: 'camera-student-room', label: '-- เลือกระดับชั้น --' },
-        { id: 'attendance-room-select', label: '-- กรุณาเลือก --' },
-        { id: 'list-room-filter', label: 'ระดับชั้นทั้งหมด' }, // เพิ่มตัวเลือก "ทั้งหมด" ให้เมนูรายชื่อ
-        { id: 'report-room-select', label: '-- เลือกระดับชั้น --' }
-      ];
-
-      selectConfigs.forEach(config => {
-        const select = document.getElementById(config.id);
-        if(!select) return;
-        
-        const currentValue = select.value;
-        
-        // ล้างตัวเลือกเดิมทั้งหมด
-        select.innerHTML = '';
-        
-        // สร้างตัวเลือกแรก (Value ว่าง = ทั้งหมด หรือ ยังไม่เลือก)
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = config.label;
-        select.appendChild(defaultOption);
-
-        // เพิ่มรายชื่อห้องจากระบบ
-        ROOMS.forEach(room => {
-          const option = document.createElement('option');
-          option.value = room;
-          option.textContent = room;
-          select.appendChild(option);
-        });
-
-        // คืนค่าเดิมที่เลือกไว้ (ถ้ามี)
-        if (currentValue && ROOMS.includes(currentValue)) {
-          select.value = currentValue;
-        } else {
-          select.value = ""; // ถ้าไม่มีให้กลับไปที่ตัวเลือกแรก
+        async function loadModels() {
+            updateLoadingProgress(0, 'กำลังโหลด AI Models...');
+            try {
+                const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model';
+                
+                updateLoadingProgress(20);
+                await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+                
+                updateLoadingProgress(50);
+                await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+                
+                updateLoadingProgress(80);
+                await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+                
+                updateLoadingProgress(100, 'โหลดสำเร็จ!');
+                
+                modelsLoaded = true;
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    const loginSection = document.getElementById('login-section');
+                    loginSection.style.display = 'flex';
+                    setTimeout(() => { loginSection.style.opacity = '1'; }, 50);
+                    setTimeout(() => { document.getElementById('admin-password').focus(); }, 100);
+                }, 800);
+                return true;
+            } catch (error) {
+                updateLoadingProgress(0, 'Error: ' + error.message);
+                showToast('ไม่สามารถโหลด AI Models ได้', 'error');
+                return false;
+            }
         }
-      });
-    }
 
-    async function fetchFaces() {
-      try {
-        const response = await fetch(GAS_URL + '?action=getFaces&t=' + Date.now(), {
-          method: 'GET',
-          mode: 'cors',
-          redirect: 'follow'
-        });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
+        async function extractFaceDescriptor(imageElement) {
+            try {
+                const detection = await faceapi
+                    .detectSingleFace(imageElement)
+                    .withFaceLandmarks()
+                    .withFaceDescriptor();
+                if (!detection) {
+                    return null;
+                }
+                return detection.descriptor;
+            } catch (error) {
+                console.error('Error extracting face descriptor:', error);
+                return null;
+            }
         }
-        
-        const text = await response.text();
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('Response text:', text.substring(0, 200));
-          throw new Error('รูปแบบข้อมูลไม่ถูกต้อง กรุณาตรวจสอบ URL และสิทธิ์การเข้าถึง');
+
+        function compareFaces(descriptor1, descriptor2, threshold = 0.5) {
+            const distance = faceapi.euclideanDistance(descriptor1, descriptor2);
+            return {
+                match: distance < threshold,
+                distance: distance,
+                confidence: Math.max(0, (1 - distance) * 100).toFixed(1)
+            };
         }
-        
-        if (result.success) {
-          storedFaces = result.data || [];
-          
-          faceDescriptors = [];
-          for (const face of storedFaces) {
-            if (face.face_descriptor) {
-              try {
-                faceDescriptors.push({
-                  id: face.id,
-                  name: face.name,
-                  room: face.room,
-                  descriptor: new Float32Array(JSON.parse(face.face_descriptor))
+
+        // [แก้ไข] ฟังก์ชันอ่านชื่อพร้อมข้อความ
+        function speakWelcome(name) {
+            if (!isSoundEnabled) return;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                // [จุดแก้ไข] อ่านชื่อและข้อความที่ต้องการ
+                const text = `${name} บันทึกข้อมูลพบกลุ่ม`; 
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'th-TH';
+                utterance.rate = 1.0; 
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+
+                const voices = window.speechSynthesis.getVoices();
+                const thaiVoice = voices.find(v => v.lang.includes('th'));
+                if (thaiVoice) {
+                    utterance.voice = thaiVoice;
+                }
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // [เพิ่มใหม่] ฟังก์ชันบันทึกข้อมูลอัตโนมัติ (Single Record)
+        async function saveSingleAuto(student) {
+            try {
+                const record = {
+                    id: student.id,
+                    name: student.name,
+                    room: student.room,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // เรียกใช้ saveAttendance ตัวเดิม (ซึ่งรับ Array)
+                await saveAttendance([record]);
+                
+                showToast(`บันทึกเรียบร้อย: ${student.name}`, 'success');
+            } catch (error) {
+                console.error("Auto save error:", error);
+                showToast("บันทึกอัตโนมัติล้มเหลว", 'error');
+            }
+        }
+
+        async function fetchRooms() {
+            try {
+                const response = await fetch(GAS_URL + '?action=getRooms&t=' + Date.now(), {
+                    method: 'GET',
+                    mode: 'cors',
+                    redirect: 'follow'
                 });
-              } catch (e) {
-                console.error('Error parsing face descriptor:', e);
-              }
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                const text = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(text);
+                } catch (e) {
+                    throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
+                }
+                if (result.success) {
+                    ROOMS = result.data || [];
+                    updateRoomSelects();
+                    return true;
+                } else {
+                    throw new Error(result.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Fetch Rooms Error:', error);
+                showToast('ไม่สามารถโหลดรายชื่อห้องได้: ' + error.message, 'error');
+                return false;
             }
-          }
-          
-          renderFacesList();
-          updateFaceCount();
-          showToast('โหลดข้อมูลสำเร็จ (' + storedFaces.length + ' รายการ)', 'success');
-        } else {
-          throw new Error(result.error || 'Unknown error');
         }
-      } catch (error) {
-        console.error('Fetch Error:', error);
-        showToast('ไม่สามารถโหลดข้อมูลได้: ' + error.message, 'error');
-        renderFacesList();
-        updateFaceCount();
-      }
-    }
 
-    async function createFace(faceData) {
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          mode: 'cors',
-          redirect: 'follow',
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify({
-            action: 'createFace',
-            ...faceData
-          })
-        });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
+        async function fetchAttendanceReport(room, startDate, endDate) {
+            try {
+                const params = new URLSearchParams({
+                    action: 'getAttendance',
+                    room: room,
+                    t: Date.now()
+                });
+                const response = await fetch(GAS_URL + '?' + params.toString(), {
+                    method: 'GET',
+                    mode: 'cors',
+                    redirect: 'follow'
+                });
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                const text = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(text);
+                } catch (e) {
+                    throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
+                }
+                if (result.success) {
+                    let records = result.data || [];
+                    if (startDate && endDate) {
+                        const start = new Date(startDate);
+                        start.setHours(0, 0, 0, 0);
+                        const end = new Date(endDate);
+                        end.setHours(23, 59, 59, 999);
+                        records = records.filter(record => {
+                            const recordDate = new Date(record.timestamp);
+                            return recordDate >= start && recordDate <= end;
+                        });
+                    }
+                    return records;
+                } else {
+                    throw new Error(result.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Fetch Attendance Report Error:', error);
+                showToast('ไม่สามารถโหลดรายงานได้: ' + error.message, 'error');
+                return [];
+            }
         }
-        
-        const text = await response.text();
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('Response text:', text.substring(0, 200));
-          throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-        }
-        
-        if (result.success) {
-          await fetchFaces();
-          return true;
-        }
-        throw new Error(result.error || 'Unknown error');
-      } catch (error) {
-        console.error('Create Error:', error);
-        showToast('ไม่สามารถบันทึกข้อมูลได้: ' + error.message, 'error');
-        return false;
-      }
-    }
 
-    async function saveAttendance(attendanceData) {
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          mode: 'cors',
-          redirect: 'follow',
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify({
-            action: 'saveAttendance',
-            room: selectedAttendanceRoom,
-            records: attendanceData
-          })
-        });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
-        }
-        
-        const text = await response.text();
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('Response text:', text.substring(0, 200));
-          throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-        }
-        
-        if (result.success) {
-          return true;
-        }
-        throw new Error(result.error || 'Unknown error');
-      } catch (error) {
-        console.error('Save Attendance Error:', error);
-        showToast('ไม่สามารถบันทึกการพบกลุ่มได้: ' + error.message, 'error');
-        return false;
-      }
-    }
+        function updateRoomSelects() {
+            const selectConfigs = [
+                { id: 'student-room', label: '-- เลือกระดับชั้น --' },
+                { id: 'camera-student-room', label: '-- เลือกระดับชั้น --' },
+                { id: 'attendance-room-select', label: '-- กรุณาเลือก --' },
+                { id: 'list-room-filter', label: 'ระดับชั้นทั้งหมด' },
+                { id: 'report-room-select', label: '-- เลือกระดับชั้น --' }
+            ];
+            selectConfigs.forEach(config => {
+                const select = document.getElementById(config.id);
+                if(!select) return;
+                
+                const currentValue = select.value;
+                select.innerHTML = '';
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = config.label;
+                select.appendChild(defaultOption);
 
-     async function deleteFace(faceId) {
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          mode: 'cors',
-          redirect: 'follow',
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify({
-            action: 'deleteFace',
-            id: String(faceId)
-          })
-        });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
-        }
-        
-        const text = await response.text();
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('Response text:', text.substring(0, 200));
-          throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-        }
-        
-        if (result.success) {
-          await fetchFaces();
-          return true;
-        }
-        throw new Error(result.error || 'Unknown error');
-      } catch (error) {
-        console.error('Delete Error:', error);
-        showToast('ไม่สามารถลบข้อมูลได้: ' + error.message, 'error');
-        return false;
-      }
-    }
+                ROOMS.forEach(room => {
+                    const option = document.createElement('option');
+                    option.value = room;
+                    option.textContent = room;
+                    select.appendChild(option);
+                });
 
-    async function createRoom(roomName) {
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          mode: 'cors',
-          redirect: 'follow',
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify({
-            action: 'createRoom',
-            room_name: roomName
-          })
-        });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
-        }
-        
-        const text = await response.text();
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('Response text:', text.substring(0, 200));
-          throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-        }
-        
-        if (result.success) {
-          await fetchRooms();
-          return true;
-        }
-        throw new Error(result.error || 'Unknown error');
-      } catch (error) {
-        console.error('Create Room Error:', error);
-        showToast('ไม่สามารถเพิ่มระดับการศึกษาได้: ' + error.message, 'error');
-        return false;
-      }
-    }
-
-    async function deleteRoom(roomName) {
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          mode: 'cors',
-          redirect: 'follow',
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify({
-            action: 'deleteRoom',
-            room_name: roomName
-          })
-        });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
-        }
-        
-        const text = await response.text();
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('Response text:', text.substring(0, 200));
-          throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-        }
-        
-        if (result.success) {
-          await fetchRooms();
-          return true;
-        }
-        throw new Error(result.error || 'Unknown error');
-      } catch (error) {
-        console.error('Delete Room Error:', error);
-        showToast('ไม่สามารถลบระดับการศึกษาได้: ' + error.message, 'error');
-        return false;
-      }
-    }
-
-    // Modal Functions
-    function showConfigModal() {
-      document.getElementById('config-modal').style.display = 'flex';
-      document.getElementById('gas-url-input').value = GAS_URL;
-    }
-
-    function hideConfigModal() {
-      document.getElementById('config-modal').style.display = 'none';
-    }
-
-    document.getElementById('save-url-btn').addEventListener('click', async () => {
-      const url = document.getElementById('gas-url-input').value.trim();
-      if (url) {
-        GAS_URL = url;
-        localStorage.setItem('gas_url', url);
-        hideConfigModal();
-        showToast('บันทึก URL สำเร็จ', 'success');
-        await fetchRooms();
-        await fetchFaces();
-      } else {
-        showToast('กรุณาใส่ URL', 'error');
-      }
-    });
-
-    document.getElementById('change-url-btn').addEventListener('click', showConfigModal);
-    
-    function renderFacesList() {
-      const grid = document.getElementById('faces-grid');
-      grid.innerHTML = '';
-
-      let filteredFaces = storedFaces;
-      if (selectedListRoomFilter) {
-        filteredFaces = storedFaces.filter(face => face.room === selectedListRoomFilter);
-      }
-
-      if (filteredFaces.length === 0) {
-        grid.innerHTML = '<p class="col-span-full text-center py-8 opacity-60">ยังไม่มีข้อมูลนักศึกษา</p>';
-        return;
-      }
-
-      filteredFaces.forEach(face => {
-        const card = createFaceCard(face);
-        grid.appendChild(card);
-      });
-    }
-
-    function createFaceCard(face) {
-      const card = document.createElement('div');
-      card.dataset.faceId = face.id;
-      
-      card.className = 'relative rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all bg-white group';
-      
-      // แก้ไข: ลบ opacity-0 group-hover:opacity-100 ออก เพื่อให้ปุ่มแสดงตลอดเวลา (แก้ปัญหากดบนมือถือยาก)
-      // แก้ไข: เพิ่ม z-10 เพื่อให้ปุ่มอยู่ชั้นบนสุดแน่นอน
-      card.innerHTML = `
-        <div class="relative pt-[100%]">
-             <img src="${face.image_data}" alt="${face.name}" class="absolute top-0 left-0 w-full h-full object-cover">
-        </div>
-        <div class="p-3">
-          <p class="font-bold text-gray-800 text-sm truncate text-center">${face.name}</p>
-          <p class="text-xs text-gray-500 text-center truncate">${face.room || '-'}</p>
-        </div>
-        <button class="delete-btn absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 transition-all z-10">
-            <i class="fas fa-times text-sm"></i>
-        </button>
-      `;
-
-      const deleteBtn = card.querySelector('.delete-btn');
-      
-      // แก้ไข: เพิ่ม parameter (e) และ e.stopPropagation()
-      deleteBtn.addEventListener('click', async (e) => {
-        e.stopPropagation(); // หยุดไม่ให้การกดส่งผลไปที่ตัวการ์ด (ป้องกันบั๊ก)
-        e.preventDefault();  // ป้องกันพฤติกรรมเริ่มต้น (ถ้ามี)
-
-        const faceName = face.name;
-        showConfirmDeleteModal(`ต้องการลบ "${faceName}" ใช่หรือไม่?`, async () => {
-            const success = await deleteFace(face.id);
-            if (success) showToast(`ลบข้อมูล "${faceName}" สำเร็จ`, 'success');
-        });
-      });
-      
-      return card;
-    }
-
-    function updateFaceCount() {
-      let count = storedFaces.length;
-      if (selectedListRoomFilter) {
-        count = storedFaces.filter(face => face.room === selectedListRoomFilter).length;
-      }
-      document.getElementById('face-count').textContent = count;
-    }
-
-    function renderRoomsList() {
-    const listContainer = document.getElementById('rooms-list');
-    listContainer.innerHTML = '';
-
-    if (ROOMS.length === 0) {
-        listContainer.innerHTML = '<p class="text-center py-8 opacity-60">ยังไม่มีระดับการศึกษา</p>';
-        document.getElementById('room-count').textContent = '0';
-        return;
-    }
-
-    ROOMS.forEach((room, index) => {
-        const studentsInRoom = storedFaces.filter(face => face.room === room);
-        const studentCount = studentsInRoom.length;
-        
-        const item = document.createElement('div');
-        item.className = 'p-4 flex justify-between items-center hover:bg-gray-50 transition-colors';
-        item.dataset.roomName = room;
-        item.innerHTML = `
-             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-sm">
-                    ${index + 1}
-                </div>
-                <div>
-                    <p class="font-semibold text-gray-800">${room}</p>
-                    <p class="text-xs text-gray-500">นักศึกษา ${studentCount} คน</p>
-                </div>
-            </div>
-            <button class="delete-room-btn px-3 py-1.5 rounded-lg text-sm text-red-600 bg-red-50 hover:bg-red-100 transition-colors" data-room="${room}" data-student-count="${studentCount}">
-                <i class="fas fa-trash-alt mr-1"></i> ลบ
-            </button>
-        `;
-        listContainer.appendChild(item);
-    });
-
-    document.querySelectorAll('.delete-room-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-            const roomName = e.currentTarget.dataset.room; // Fix: use currentTarget
-            showConfirmDeleteModal(`ต้องการลบระดับชั้น "${roomName}" ใช่หรือไม่?`, async () => {
-                 const success = await deleteRoom(roomName);
-                 if (success) {
-                    showToast(`ลบระดับการศึกษา "${roomName}" สำเร็จ`, 'success');
-                    renderRoomsList();
-                    await fetchFaces();
-                 }
+                if (currentValue && ROOMS.includes(currentValue)) {
+                    select.value = currentValue;
+                } else {
+                    select.value = "";
+                }
             });
-        });
-    });
-    document.getElementById('room-count').textContent = ROOMS.length;
-}
-
-    function showToast(message, type = 'info') {
-      const toast = document.createElement('div');
-      let bgColor = 'bg-gray-800';
-      if(type === 'success') bgColor = 'bg-emerald-600';
-      if(type === 'error') bgColor = 'bg-red-500';
-
-      toast.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full text-white shadow-2xl z-50 flex items-center gap-2 toast-enter ${bgColor}`;
-      toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle')}"></i> ${message}`;
-      
-      document.body.appendChild(toast);
-      setTimeout(() => {
-          toast.style.opacity = '0';
-          toast.style.transform = 'translate(-50%, 20px)';
-          setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    let currentReportData = [];
-    async function loadReport() {
-      const room = document.getElementById('report-room-select').value;
-      const startDate = document.getElementById('report-start-date').value;
-      const endDate = document.getElementById('report-end-date').value;
-
-      if (!room) {
-        showToast('กรุณาเลือกระดับการศึกษา', 'error');
-        return;
-      }
-
-      if (!startDate || !endDate) {
-        showToast('กรุณาเลือกวันที่เริ่มต้นและสิ้นสุด', 'error');
-        return;
-      }
-
-      const loadBtn = document.getElementById('load-report-btn');
-      const loadText = document.getElementById('load-report-text');
-      const loadLoading = document.getElementById('load-report-loading');
-      loadBtn.disabled = true;
-      loadText.classList.add('hidden');
-      loadLoading.classList.remove('hidden');
-
-      const attendanceRecords = await fetchAttendanceReport(room, startDate, endDate);
-      
-      loadBtn.disabled = false;
-      loadText.classList.remove('hidden');
-      loadLoading.classList.add('hidden');
-      
-      const studentsInRoom = storedFaces.filter(face => face.room === room);
-      const totalStudents = studentsInRoom.length;
-
-      const attendedStudentIds = new Set(attendanceRecords.map(record => record.student_id));
-      const attendedCount = attendedStudentIds.size;
-      const absentCount = totalStudents - attendedCount;
-
-      document.getElementById('total-students').textContent = totalStudents;
-      document.getElementById('attended-students').textContent = attendedCount;
-      document.getElementById('absent-students').textContent = absentCount;
-      
-      currentReportData = [];
-      const tableBody = document.getElementById('report-table-body');
-      tableBody.innerHTML = '';
-
-      let rowIndex = 1;
-      studentsInRoom.forEach(student => {
-        const studentRecords = attendanceRecords.filter(record => record.student_id === student.id);
-        
-        if (studentRecords.length > 0) {
-          studentRecords.forEach(record => {
-            const date = new Date(record.timestamp);
-            const row = document.createElement('tr');
-            
-            row.innerHTML = `
-              <td class="p-4 text-gray-500">${rowIndex}</td>
-              <td class="p-4 font-medium">${student.name}</td>
-              <td class="p-4 text-gray-500">${student.room}</td>
-              <td class="p-4 text-center">
-                 <span class="px-2 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">มา</span>
-              </td>
-              <td class="p-4 text-gray-500">${date.toLocaleDateString('th-TH')} ${date.toLocaleTimeString('th-TH')}</td>
-            `;
-            tableBody.appendChild(row);
-            
-            currentReportData.push({
-              no: rowIndex,
-              name: student.name,
-              room: student.room,
-              status: 'มาพบกลุ่ม',
-              date: date.toLocaleDateString('th-TH'),
-              time: date.toLocaleTimeString('th-TH')
-            });
-            rowIndex++;
-          });
-        } else {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td class="p-4 text-gray-500">${rowIndex}</td>
-            <td class="p-4 font-medium">${student.name}</td>
-            <td class="p-4 text-gray-500">${student.room}</td>
-            <td class="p-4 text-center">
-               <span class="px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">ขาด</span>
-            </td>
-            <td class="p-4 text-gray-500">-</td>
-          `;
-          tableBody.appendChild(row);
-          
-          currentReportData.push({
-            no: rowIndex,
-            name: student.name,
-            room: student.room,
-            status: 'ไม่มาพบกลุ่ม',
-            date: '-',
-            time: '-'
-          });
-          rowIndex++;
-        }
-      });
-
-      document.getElementById('report-results').classList.remove('hidden');
-      showToast('โหลดรายงานสำเร็จ', 'success');
-    }
-
-    function exportToExcel() {
-      if (currentReportData.length === 0) {
-        showToast('ไม่มีข้อมูลสำหรับส่งออก', 'error');
-        return;
-      }
-
-      const room = document.getElementById('report-room-select').value;
-      const startDate = document.getElementById('report-start-date').value;
-      const endDate = document.getElementById('report-end-date').value;
-      let csv = '\uFEFF';
-      csv += `รายงานการพบกลุ่ม\n`;
-      csv += `ระดับการศึกษา: ${room}\n`;
-      csv += `ช่วงเวลา: ${startDate} ถึง ${endDate}\n`;
-      csv += `นักศึกษาทั้งหมด: ${document.getElementById('total-students').textContent} คน\n`;
-      csv += `มาพบกลุ่ม: ${document.getElementById('attended-students').textContent} คน\n`;
-      csv += `ไม่มาพบกลุ่ม: ${document.getElementById('absent-students').textContent} คน\n\n`;
-      
-      csv += 'ลำดับ,ชื่อ-นามสกุล,ระดับการศึกษา,สถานะ,วันที่,เวลา\n';
-      currentReportData.forEach(row => {
-        csv += `${row.no},"${row.name}","${row.room}","${row.status}","${row.date}","${row.time}"\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      
-      link.setAttribute('href', url);
-      link.setAttribute('download', `รายงานการพบกลุ่ม_${room}_${startDate}_${endDate}.csv`);
-      link.style.visibility = 'hidden';
-      
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      showToast('ส่งออกไฟล์สำเร็จ', 'success');
-    }
-
-    async function deleteAttendanceData() {
-        const room = document.getElementById('report-room-select').value;
-        const startDate = document.getElementById('report-start-date').value;
-        const endDate = document.getElementById('report-end-date').value;
-        
-        if (!room || !startDate || !endDate) {
-            showToast('กรุณาเลือกระดับการศึกษาและช่วงวันที่', 'error');
-            return;
         }
 
-        showConfirmDeleteModal('ยืนยันการลบประวัติการเข้าเรียนช่วงเวลานี้?', async () => {
-             // ... logic from original code wrapped in new modal callback
-             // Simulating the original delete flow:
-             const deleteBtn = document.getElementById('delete-attendance-btn');
-             deleteBtn.disabled = true;
-             deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        async function fetchFaces() {
+            try {
+                const response = await fetch(GAS_URL + '?action=getFaces&t=' + Date.now(), {
+                    method: 'GET',
+                    mode: 'cors',
+                    redirect: 'follow'
+                });
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                const text = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(text);
+                } catch (e) {
+                    throw new Error('รูปแบบข้อมูลไม่ถูกต้อง กรุณาตรวจสอบ URL และสิทธิ์การเข้าถึง');
+                }
+                
+                if (result.success) {
+                    storedFaces = result.data || [];
+                    faceDescriptors = [];
+                    for (const face of storedFaces) {
+                        if (face.face_descriptor) {
+                            try {
+                                faceDescriptors.push({
+                                    id: face.id,
+                                    name: face.name,
+                                    room: face.room,
+                                    descriptor: new Float32Array(JSON.parse(face.face_descriptor))
+                                });
+                            } catch (e) {
+                                console.error('Error parsing face descriptor:', e);
+                            }
+                        }
+                    }
+                    renderFacesList();
+                    updateFaceCount();
+                    showToast('โหลดข้อมูลสำเร็จ (' + storedFaces.length + ' รายการ)', 'success');
+                } else {
+                    throw new Error(result.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                showToast('ไม่สามารถโหลดข้อมูลได้: ' + error.message, 'error');
+                renderFacesList();
+                updateFaceCount();
+            }
+        }
 
-             try {
-                const startTimestamp = new Date(startDate + 'T00:00:00').getTime();
-                const endTimestamp = new Date(endDate + 'T23:59:59').getTime();
+        async function createFace(faceData) {
+            try {
                 const response = await fetch(GAS_URL, {
                     method: 'POST',
                     mode: 'cors',
                     redirect: 'follow',
-                    headers: {'Content-Type': 'text/plain'},
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: 'createFace', ...faceData })
+                });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                
+                const text = await response.text();
+                let result = JSON.parse(text);
+                
+                if (result.success) {
+                    await fetchFaces();
+                    return true;
+                }
+                throw new Error(result.error || 'Unknown error');
+            } catch (error) {
+                console.error('Create Error:', error);
+                showToast('ไม่สามารถบันทึกข้อมูลได้: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        async function saveAttendance(attendanceData) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({
-                        action: 'deleteAttendance',
-                        room: room,
-                        start_timestamp: startTimestamp,
-                        end_timestamp: endTimestamp
+                        action: 'saveAttendance',
+                        room: selectedAttendanceRoom,
+                        records: attendanceData
                     })
                 });
                 if (!response.ok) throw new Error('HTTP ' + response.status);
+                
                 const text = await response.text();
                 let result = JSON.parse(text);
+                
                 if (result.success) {
-                    showToast(`ลบข้อมูลสำเร็จ (${result.deleted_count || 0} รายการ)`, 'success');
-                    await loadReport();
-                } else {
-                    throw new Error(result.error);
+                    return true;
                 }
+                throw new Error(result.error || 'Unknown error');
             } catch (error) {
-                showToast('ลบข้อมูลไม่สำเร็จ: ' + error.message, 'error');
-            } finally {
-                deleteBtn.disabled = false;
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i> ลบ';
+                console.error('Save Attendance Error:', error);
+                showToast('ไม่สามารถบันทึกการพบกลุ่มได้: ' + error.message, 'error');
+                return false;
             }
-        });
-    }
-
-    // Main Tab Switching
-    function switchMainTab(tab) {
-      currentMainTab = tab;
-      const registerSection = document.getElementById('register-section');
-      const attendanceSection = document.getElementById('attendance-section');
-      const reportSection = document.getElementById('report-section');
-      const listSection = document.getElementById('list-section');
-      const roomsSection = document.getElementById('rooms-section');
-      
-      // Buttons
-      const buttons = {
-          'register': document.getElementById('main-tab-register'),
-          'attendance': document.getElementById('main-tab-attendance'),
-          'report': document.getElementById('main-tab-report'),
-          'list': document.getElementById('main-tab-list'),
-          'rooms': document.getElementById('main-tab-rooms')
-      };
-
-      // Reset All
-      [registerSection, attendanceSection, reportSection, listSection, roomsSection].forEach(el => el.classList.add('hidden'));
-      Object.values(buttons).forEach(btn => btn.classList.remove('active'));
-
-      // Activate
-      buttons[tab].classList.add('active');
-      
-      if (tab === 'register') {
-        registerSection.classList.remove('hidden');
-        stopAttendanceCamera();
-      } else if (tab === 'attendance') {
-        attendanceSection.classList.remove('hidden');
-        stopRegisterCamera();
-      } else if (tab === 'report') {
-        reportSection.classList.remove('hidden');
-        stopRegisterCamera();
-        stopAttendanceCamera();
-      } else if (tab === 'list') {
-        listSection.classList.remove('hidden');
-        stopRegisterCamera();
-        stopAttendanceCamera();
-      } else if (tab === 'rooms') {
-        roomsSection.classList.remove('hidden');
-        stopRegisterCamera();
-        stopAttendanceCamera();
-        renderRoomsList();
-      }
-    }
-
-    // Register Tab Switching (Sub-tabs)
-    function switchRegisterTab(tab) {
-      currentRegisterTab = tab;
-      const uploadSection = document.getElementById('register-upload-section');
-      const cameraSection = document.getElementById('register-camera-section');
-      const tabUpload = document.getElementById('register-tab-upload');
-      const tabCamera = document.getElementById('register-tab-camera');
-
-      if (tab === 'upload') {
-        uploadSection.classList.remove('hidden');
-        cameraSection.classList.add('hidden');
-        
-        tabUpload.classList.add('bg-white', 'text-primary-700', 'shadow-sm');
-        tabUpload.classList.remove('text-gray-500');
-        
-        tabCamera.classList.remove('bg-white', 'text-primary-700', 'shadow-sm');
-        tabCamera.classList.add('text-gray-500');
-        stopRegisterCamera();
-      } else {
-        uploadSection.classList.add('hidden');
-        cameraSection.classList.remove('hidden');
-
-        tabCamera.classList.add('bg-white', 'text-primary-700', 'shadow-sm');
-        tabCamera.classList.remove('text-gray-500');
-        
-        tabUpload.classList.remove('bg-white', 'text-primary-700', 'shadow-sm');
-        tabUpload.classList.add('text-gray-500');
-      }
-    }
-
-    // Register Camera Functions
-    async function startRegisterCamera() {
-      try {
-        const hasMultipleCameras = await checkAvailableCameras();
-        const constraints = {
-          video: {
-            facingMode: currentRegisterFacingMode,
-            width: { ideal: 1280 },
-            height: { ideal: 960 }
-          },
-          audio: false
-        };
-        registerCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-        const video = document.getElementById('register-camera-video');
-        video.srcObject = registerCameraStream;
-        
-        await video.play();
-        
-        document.getElementById('start-register-camera-btn').classList.add('hidden');
-        document.getElementById('capture-register-btn').classList.remove('hidden');
-        if (hasMultipleCameras) {
-          document.getElementById('switch-register-camera-btn').classList.remove('hidden');
         }
-        
-        video.addEventListener('loadedmetadata', () => {
-          const canvas = document.getElementById('register-camera-canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-        });
-        showToast('เปิดกล้องสำเร็จ', 'success');
-      } catch (error) {
-        console.error('Camera error:', error);
-        showToast('ไม่สามารถเข้าถึงกล้องได้: ' + error.message, 'error');
-      }
-    }
 
-    async function switchRegisterCamera() {
-      currentRegisterFacingMode = currentRegisterFacingMode === 'user' ?
-      'environment' : 'user';
-      stopRegisterCamera();
-      await startRegisterCamera();
-    }
-
-    function stopRegisterCamera() {
-      if (registerCameraStream) {
-        registerCameraStream.getTracks().forEach(track => track.stop());
-        registerCameraStream = null;
-        const video = document.getElementById('register-camera-video');
-        video.srcObject = null;
-        
-        document.getElementById('start-register-camera-btn').classList.remove('hidden');
-        document.getElementById('switch-register-camera-btn').classList.add('hidden');
-        document.getElementById('capture-register-btn').classList.add('hidden');
-        document.getElementById('save-register-btn').classList.add('hidden');
-        document.getElementById('captured-image-canvas').classList.add('hidden');
-        
-        const canvas = document.getElementById('register-camera-canvas');
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        capturedImageData = null;
-      }
-    }
-
-    function captureRegisterImage() {
-      const video = document.getElementById('register-camera-video');
-      const canvas = document.getElementById('captured-image-canvas');
-      const ctx = canvas.getContext('2d');
-      
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0);
-      capturedImageData = canvas.toDataURL('image/jpeg', 0.8);
-      canvas.classList.remove('hidden');
-      document.getElementById('save-register-btn').classList.remove('hidden');
-      
-      showToast('ถ่ายภาพสำเร็จ', 'success');
-    }
-
-    async function saveRegisterImage() {
-      const name = document.getElementById('camera-person-name').value.trim();
-      const room = document.getElementById('camera-student-room').value;
-
-      if (!name) {
-        showToast('กรุณากรอกชื่อ-นามสกุล', 'error');
-        return;
-      }
-
-      if (!room) {
-        showToast('กรุณาเลือกระดับการศึกษา', 'error');
-        return;
-      }
-
-      if (!capturedImageData) {
-        showToast('กรุณาถ่ายภาพก่อน', 'error');
-        return;
-      }
-
-      const saveBtn = document.getElementById('save-register-btn');
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'กำลังบันทึก...';
-      
-      try {
-        const img = new Image();
-        img.onload = async () => {
-          const descriptor = await extractFaceDescriptor(img);
-          if (!descriptor) {
-            showToast('ไม่พบใบหน้าในรูปภาพ กรุณาถ่ายใหม่', 'error');
-            saveBtn.disabled = false;
-            saveBtn.textContent = 'บันทึก';
-            return;
-          }
-
-          const newFace = {
-            id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
-            name: name,
-            room: room,
-            image_data: capturedImageData,
-            face_descriptor: JSON.stringify(Array.from(descriptor)),
-            
-            created_at: new Date().toISOString()
-          };
-
-          const success = await createFace(newFace);
-          saveBtn.disabled = false;
-          saveBtn.textContent = 'บันทึก';
-
-          if (success) {
-            showToast('บันทึกข้อมูลสำเร็จ', 'success');
-            document.getElementById('camera-person-name').value = '';
-            document.getElementById('camera-student-room').value = '';
-            document.getElementById('captured-image-canvas').classList.add('hidden');
-            document.getElementById('save-register-btn').classList.add('hidden');
-            capturedImageData = null;
-          }
-        };
-        img.onerror = () => {
-          saveBtn.disabled = false;
-          saveBtn.textContent = 'บันทึก';
-          showToast('ไม่สามารถโหลดรูปภาพได้', 'error');
-        };
-        img.src = capturedImageData;
-      } catch (error) {
-        saveBtn.disabled = false;
-        saveBtn.textContent = 'บันทึก';
-        showToast('เกิดข้อผิดพลาด: ' + error.message, 'error');
-      }
-    }
-
-    // Attendance Camera Functions
-    async function startAttendanceCamera() {
-      if (!selectedAttendanceRoom) {
-        showToast('กรุณาเลือกระดับการศึกษาก่อน', 'error');
-        return;
-      }
-
-      try {
-        const hasMultipleCameras = await checkAvailableCameras();
-        const constraints = {
-          video: {
-            facingMode: currentAttendanceFacingMode,
-            width: { ideal: 1280 },
-            height: { ideal: 960 }
-          },
-          audio: false
-        };
-        attendanceCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-        const video = document.getElementById('attendance-camera-video');
-        video.srcObject = attendanceCameraStream;
-        
-        await video.play();
-        
-        document.getElementById('start-attendance-camera-btn').classList.add('hidden');
-        document.getElementById('stop-attendance-camera-btn').classList.remove('hidden');
-        document.getElementById('toggle-sound-btn').classList.remove('hidden');
-        
-        // Load voices just in case
-        window.speechSynthesis.getVoices();
-        if (hasMultipleCameras) {
-          document.getElementById('switch-attendance-camera-btn').classList.remove('hidden');
-        }
-        
-        video.addEventListener('loadedmetadata', () => {
-          const canvas = document.getElementById('attendance-camera-canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          
-          startAttendanceDetection();
-        });
-        showToast('เปิดกล้องสำเร็จ - กำลังตรวจจับใบหน้า', 'success');
-      } catch (error) {
-        console.error('Camera error:', error);
-        showToast('ไม่สามารถเข้าถึงกล้องได้: ' + error.message, 'error');
-      }
-    }
-
-    async function switchAttendanceCamera() {
-      currentAttendanceFacingMode = currentAttendanceFacingMode === 'user' ?
-      'environment' : 'user';
-      stopAttendanceCamera();
-      await startAttendanceCamera();
-    }
-
-    function stopAttendanceCamera() {
-      if (attendanceCameraStream) {
-        attendanceCameraStream.getTracks().forEach(track => track.stop());
-        attendanceCameraStream = null;
-        const video = document.getElementById('attendance-camera-video');
-        video.srcObject = null;
-        
-        document.getElementById('start-attendance-camera-btn').classList.remove('hidden');
-        document.getElementById('switch-attendance-camera-btn').classList.add('hidden');
-        document.getElementById('stop-attendance-camera-btn').classList.add('hidden');
-        document.getElementById('toggle-sound-btn').classList.add('hidden');
-        
-        stopAttendanceDetection();
-        const canvas = document.getElementById('attendance-camera-canvas');
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    }
-
-    function startAttendanceDetection() {
-      if (attendanceDetectionInterval) {
-        clearInterval(attendanceDetectionInterval);
-      }
-      
-      attendanceDetectionInterval = setInterval(async () => {
-        await detectAttendanceFaces();
-      }, 500);
-    }
-
-    function stopAttendanceDetection() {
-      if (attendanceDetectionInterval) {
-        clearInterval(attendanceDetectionInterval);
-        attendanceDetectionInterval = null;
-      }
-    }
-
-    // --- UPDATED: detectAttendanceFaces with TTS Logic ---
-    async function detectAttendanceFaces() {
-      const video = document.getElementById('attendance-camera-video');
-      const canvas = document.getElementById('attendance-camera-canvas');
-      const ctx = canvas.getContext('2d');
-
-      if (!video.videoWidth || !modelsLoaded || faceDescriptors.length === 0) {
-        return;
-      }
-
-      const roomFaceDescriptors = faceDescriptors.filter(face => face.room === selectedAttendanceRoom);
-      if (roomFaceDescriptors.length === 0) {
-        return;
-      }
-
-      try {
-        const detections = await faceapi
-          .detectAllFaces(video)
-          .withFaceLandmarks()
-          .withFaceDescriptors();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (detections.length > 0) {
-          detections.forEach(detection => {
-            const box = detection.detection.box;
-            
-            // Modern Drawing
-            ctx.strokeStyle = '#10b981';
-            ctx.lineWidth = 4;
-            // Draw Corners (simplified for canvas)
-            ctx.strokeRect(box.x, box.y, box.width, box.height);
-
-            let bestMatch = null;
-            let bestConfidence = 0;
-
-            for (const storedFace of roomFaceDescriptors) {
-              const comparison = compareFaces(detection.descriptor, storedFace.descriptor);
-              if (comparison.match && parseFloat(comparison.confidence) > bestConfidence) {
-                bestMatch = storedFace;
-                bestConfidence = parseFloat(comparison.confidence);
-              }
+        async function deleteFace(faceId) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: 'deleteFace', id: String(faceId) })
+                });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                
+                const text = await response.text();
+                let result = JSON.parse(text);
+                
+                if (result.success) {
+                    await fetchFaces();
+                    return true;
+                }
+                throw new Error(result.error || 'Unknown error');
+            } catch (error) {
+                console.error('Delete Error:', error);
+                showToast('ไม่สามารถลบข้อมูลได้: ' + error.message, 'error');
+                return false;
             }
+        }
 
-            if (bestMatch) {
-              // Normalize confidence
-              const normalizedConf = getNormalizedConfidence(bestConfidence);
-              
-              if (normalizedConf >= 50) {
-                  // 1. Add to List
-                  if (!detectedStudents.has(bestMatch.id)) {
-                    detectedStudents.set(bestMatch.id, {
-                      id: bestMatch.id,
-                      name: bestMatch.name,
-                      room: bestMatch.room,
-                      timestamp: new Date().toISOString(),
-                      confidence: bestConfidence
-                    });
-                    updateDetectedList();
-                  }
+        async function createRoom(roomName) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: 'createRoom', room_name: roomName })
+                });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                
+                const text = await response.text();
+                let result = JSON.parse(text);
+                
+                if (result.success) {
+                    await fetchRooms();
+                    return true;
+                }
+                throw new Error(result.error || 'Unknown error');
+            } catch (error) {
+                console.error('Create Room Error:', error);
+                showToast('ไม่สามารถเพิ่มระดับการศึกษาได้: ' + error.message, 'error');
+                return false;
+            }
+        }
 
-                  // 2. Text-to-Speech with Cooldown
-                  const now = Date.now();
-                  const lastSpoken = spokenStudents.get(bestMatch.id) || 0;
+        async function deleteRoom(roomName) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: 'deleteRoom', room_name: roomName })
+                });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                
+                const text = await response.text();
+                let result = JSON.parse(text);
+                
+                if (result.success) {
+                    await fetchRooms();
+                    return true;
+                }
+                throw new Error(result.error || 'Unknown error');
+            } catch (error) {
+                console.error('Delete Room Error:', error);
+                showToast('ไม่สามารถลบระดับการศึกษาได้: ' + error.message, 'error');
+                return false;
+            }
+        }
 
-                  if (now - lastSpoken > SPEAK_COOLDOWN) {
-                      speakWelcome(bestMatch.name);
-                      spokenStudents.set(bestMatch.id, now); 
-                  }
-              }
-              
-              // Draw Label
-              const label = `${bestMatch.name} (${Math.round(normalizedConf)}%)`;
-              ctx.font = '600 20px Prompt, sans-serif';
-              const textMetrics = ctx.measureText(label);
-              
-              ctx.fillStyle = '#10b981';
-              ctx.fillRect(box.x, box.y - 35, textMetrics.width + 20, 30);
-              
-              ctx.fillStyle = 'white';
-              ctx.fillText(label, box.x + 10, box.y - 12);
+        function showConfigModal() {
+            document.getElementById('config-modal').style.display = 'flex';
+            document.getElementById('gas-url-input').value = GAS_URL;
+        }
 
+        function hideConfigModal() {
+            document.getElementById('config-modal').style.display = 'none';
+        }
+
+        document.getElementById('save-url-btn').addEventListener('click', async () => {
+            const url = document.getElementById('gas-url-input').value.trim();
+            if (url) {
+                GAS_URL = url;
+                localStorage.setItem('gas_url', url);
+                hideConfigModal();
+                showToast('บันทึก URL สำเร็จ', 'success');
+                await fetchRooms();
+                await fetchFaces();
             } else {
-              // Unknown Face
-              ctx.strokeStyle = '#ef4444';
-              ctx.strokeRect(box.x, box.y, box.width, box.height);
+                showToast('กรุณาใส่ URL', 'error');
             }
-          });
+        });
 
-          document.getElementById('attendance-count').innerHTML = `<i class="fas fa-search mr-2"></i>พบ ${detections.length} คน`;
-        } else {
-          document.getElementById('attendance-count').innerHTML = `<i class="fas fa-search mr-2"></i>รอตรวจจับ...`;
-        }
-      } catch (error) {
-        console.error('Detection error:', error);
-      }
-    }
+        document.getElementById('change-url-btn').addEventListener('click', showConfigModal);
 
-    function getNormalizedConfidence(confidence) {
-        if (confidence === undefined || confidence === null) return 0;
-        let normalizedConfidence = confidence;
-        if (normalizedConfidence >= 1 && normalizedConfidence <= 100) {
-            return normalizedConfidence;
-        } else if (normalizedConfidence > 0 && normalizedConfidence < 1) {
-            return normalizedConfidence * 100;
-        } else if (normalizedConfidence > 100) {
-            return normalizedConfidence / 100;
-        } 
-        return 0;
-    }
+        function renderFacesList() {
+            const grid = document.getElementById('faces-grid');
+            grid.innerHTML = '';
 
-    function updateDetectedList() {
-        const listContainer = document.getElementById('detected-list');
-        listContainer.innerHTML = '';
+            let filteredFaces = storedFaces;
+            if (selectedListRoomFilter) {
+                filteredFaces = storedFaces.filter(face => face.room === selectedListRoomFilter);
+            }
 
-        if (detectedStudents.size === 0) {
-            listContainer.innerHTML = '<p class="text-center py-8 text-gray-400 text-sm">ยังไม่มีรายชื่อ</p>';
-            document.getElementById('save-attendance-btn').disabled = true;
-            return;
+            if (filteredFaces.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center py-8 opacity-60">ยังไม่มีข้อมูลนักศึกษา</p>';
+                return;
+            }
+
+            filteredFaces.forEach(face => {
+                const card = createFaceCard(face);
+                grid.appendChild(card);
+            });
         }
 
-        detectedStudents.forEach((student, id) => {
-             // Basic list item
-            const item = document.createElement('div');
-            item.className = 'flex justify-between items-center bg-white p-3 rounded-xl shadow-sm border border-gray-100 animate-[slideIn_0.2s_ease-out]';
-            item.innerHTML = `
-                <div class="flex items-center gap-3 overflow-hidden">
-                    <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm font-bold text-gray-800 truncate">${student.name}</p>
-                        <p class="text-xs text-gray-500">${new Date(student.timestamp).toLocaleTimeString('th-TH')}</p>
-                    </div>
+        function createFaceCard(face) {
+            const card = document.createElement('div');
+            card.dataset.faceId = face.id;
+            card.className = 'relative rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all bg-white group';
+            card.innerHTML = `
+                <div class="relative pt-[100%]">
+                    <img src="${face.image_data}" alt="${face.name}" class="absolute top-0 left-0 w-full h-full object-cover">
                 </div>
-                <button class="remove-detected-btn text-gray-400 hover:text-red-500 p-1" data-id="${id}">
-                    <i class="fas fa-times"></i>
+                <div class="p-3">
+                <p class="font-bold text-gray-800 text-sm truncate text-center">${face.name}</p>
+                <p class="text-xs text-gray-500 text-center truncate">${face.room || '-'}</p>
+                </div>
+                <button class="delete-btn absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 transition-all z-10">
+                    <i class="fas fa-times text-sm"></i>
                 </button>
             `;
-            listContainer.appendChild(item);
-        });
-        
-        document.getElementById('face-count-detect').textContent = listContainer.children.length;
+            const deleteBtn = card.querySelector('.delete-btn');
+            
+            deleteBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                e.preventDefault();
 
-        document.querySelectorAll('.remove-detected-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = e.currentTarget.dataset.id;
-                detectedStudents.delete(id);
-                updateDetectedList();
+                const faceName = face.name;
+                showConfirmDeleteModal(`ต้องการลบ "${faceName}" ใช่หรือไม่?`, async () => {
+                    const success = await deleteFace(face.id);
+                    if (success) showToast(`ลบข้อมูล "${faceName}" สำเร็จ`, 'success');
+                });
             });
-        });
-        
-        document.getElementById('save-attendance-btn').disabled = (listContainer.children.length === 0);
-    }
-
-    async function saveAttendanceRecord() {
-      if (detectedStudents.size === 0) {
-        showToast('ไม่มีรายชื่อที่ตรวจพบ', 'error');
-        return;
-      }
-
-      const saveBtn = document.getElementById('save-attendance-btn');
-      const saveBtnText = document.getElementById('save-attendance-text');
-      const saveLoading = document.getElementById('save-attendance-loading');
-      saveBtn.disabled = true;
-      saveBtnText.classList.add('hidden');
-      saveLoading.classList.remove('hidden');
-
-      const records = Array.from(detectedStudents.values());
-      const success = await saveAttendance(records);
-
-      saveBtn.disabled = false;
-      saveBtnText.classList.remove('hidden');
-      saveLoading.classList.add('hidden');
-      if (success) {
-        showToast(`บันทึกการพบกลุ่มสำเร็จ (${records.length} คน)`, 'success');
-        detectedStudents.clear();
-        updateDetectedList();
-      }
-    }
-
-    // Event Listeners
-    document.getElementById('main-tab-register').addEventListener('click', () => switchMainTab('register'));
-    document.getElementById('main-tab-attendance').addEventListener('click', () => switchMainTab('attendance'));
-    document.getElementById('main-tab-report').addEventListener('click', () => switchMainTab('report'));
-    document.getElementById('main-tab-list').addEventListener('click', () => switchMainTab('list'));
-    document.getElementById('main-tab-rooms').addEventListener('click', () => switchMainTab('rooms'));
-
-    document.getElementById('load-report-btn').addEventListener('click', loadReport);
-    document.getElementById('export-excel-btn').addEventListener('click', exportToExcel);
-    document.getElementById('delete-attendance-btn').addEventListener('click', deleteAttendanceData);
-
-    document.getElementById('register-tab-upload').addEventListener('click', () => switchRegisterTab('upload'));
-    document.getElementById('register-tab-camera').addEventListener('click', () => switchRegisterTab('camera'));
-
-    document.getElementById('start-register-camera-btn').addEventListener('click', startRegisterCamera);
-    document.getElementById('switch-register-camera-btn').addEventListener('click', switchRegisterCamera);
-    document.getElementById('capture-register-btn').addEventListener('click', captureRegisterImage);
-    document.getElementById('save-register-btn').addEventListener('click', saveRegisterImage);
-
-    document.getElementById('start-attendance-camera-btn').addEventListener('click', startAttendanceCamera);
-    document.getElementById('switch-attendance-camera-btn').addEventListener('click', switchAttendanceCamera);
-    document.getElementById('stop-attendance-camera-btn').addEventListener('click', stopAttendanceCamera);
-    document.getElementById('save-attendance-btn').addEventListener('click', saveAttendanceRecord);
-
-    // --- Sound Button Listener ---
-    const soundBtn = document.getElementById('toggle-sound-btn');
-    soundBtn.addEventListener('click', () => {
-        isSoundEnabled = !isSoundEnabled;
-        if (isSoundEnabled) {
-            soundBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-            soundBtn.classList.remove('bg-gray-500');
-            soundBtn.classList.add('bg-blue-500');
-        } else {
-            soundBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            soundBtn.classList.remove('bg-blue-500');
-            soundBtn.classList.add('bg-gray-500');
-            window.speechSynthesis.cancel(); 
+            return card;
         }
-    });
-    document.getElementById('attendance-room-select').addEventListener('change', (e) => {
-      selectedAttendanceRoom = e.target.value;
-      if (selectedAttendanceRoom) {
-        document.getElementById('attendance-camera-section').classList.remove('hidden');
-        detectedStudents.clear();
-        updateDetectedList();
-        stopAttendanceCamera();
-      } else {
-        document.getElementById('attendance-camera-section').classList.add('hidden');
-        stopAttendanceCamera();
-      }
-    });
-    document.getElementById('list-room-filter').addEventListener('change', (e) => {
-      selectedListRoomFilter = e.target.value;
-      renderFacesList();
-      updateFaceCount();
-    });
-    document.getElementById('add-room-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
 
-      const roomName = document.getElementById('new-room-name').value.trim();
-
-      if (!roomName) {
-        showToast('กรุณากรอกชื่อระดับการศึกษา', 'error');
-        return;
-      }
-
-      if (ROOMS.includes(roomName)) {
-        showToast('ระดับการศึกษานี้มีอยู่แล้ว', 'error');
-        return;
-      }
-
-      const addRoomButton = document.getElementById('add-room-button');
-      const addRoomButtonText = document.getElementById('add-room-button-text');
-      const addRoomLoading = document.getElementById('add-room-loading');
-      
-      addRoomButton.disabled = true;
-      addRoomButtonText.classList.add('hidden');
-      addRoomLoading.classList.remove('hidden');
-
-      const success = await createRoom(roomName);
-      
-      addRoomButton.disabled = false;
-      addRoomButtonText.classList.remove('hidden');
-      addRoomLoading.classList.add('hidden');
-      if (success) {
-        showToast('เพิ่มระดับการศึกษาสำเร็จ', 'success');
-        document.getElementById('add-room-form').reset();
-        renderRoomsList();
-      }
-    });
-    document.getElementById('face-image').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          pendingImageData = event.target.result;
-          document.getElementById('image-preview').src = pendingImageData;
-          document.getElementById('preview-container').classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    document.getElementById('add-face-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('person-name').value.trim();
-      const room = document.getElementById('student-room').value;
-
-      if (!name) {
-        showToast('กรุณากรอกชื่อ-นามสกุล', 'error');
-        return;
-      }
-
-      if (!room) {
-        showToast('กรุณาเลือกระดับการศึกษา', 'error');
-        return;
-      }
-
-      if (!pendingImageData) {
-        showToast('กรุณาเลือกรูปภาพ', 'error');
-        return;
-      }
-
-      const addButton = document.getElementById('add-button');
-      const addButtonText = document.getElementById('add-button-text');
-      const addLoading = document.getElementById('add-loading');
-      
-      addButton.disabled = true;
-      addButtonText.classList.add('hidden');
-      addLoading.classList.remove('hidden');
-
-      try {
-        const img = new Image();
-        img.onload = async () => {
-          const descriptor = await extractFaceDescriptor(img);
-          if (!descriptor) {
-            showToast('ไม่พบใบหน้าในรูปภาพ กรุณาเลือกรูปที่มีใบหน้าชัดเจน', 'error');
-            addButton.disabled = false;
-            addButtonText.classList.remove('hidden');
-            addLoading.classList.add('hidden');
-            return;
-          }
-
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
-          const maxWidth = 400;
-          const maxHeight = 400;
-          let width = img.width;
-          let height = img.height;
-          if (width > height) {
-            if (width > maxWidth) {
-              height *= maxWidth / width;
-              width = maxWidth;
+        function updateFaceCount() {
+            let count = storedFaces.length;
+            if (selectedListRoomFilter) {
+                count = storedFaces.filter(face => face.room === selectedListRoomFilter).length;
             }
-          } else {
-            if (height > maxHeight) {
-              width *= maxHeight / height;
-              height = maxHeight;
+            document.getElementById('face-count').textContent = count;
+        }
+
+        function renderRoomsList() {
+            const listContainer = document.getElementById('rooms-list');
+            listContainer.innerHTML = '';
+
+            if (ROOMS.length === 0) {
+                listContainer.innerHTML = '<p class="text-center py-8 opacity-60">ยังไม่มีระดับการศึกษา</p>';
+                document.getElementById('room-count').textContent = '0';
+                return;
             }
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          ctx.drawImage(img, 0, 0, width, height);
-          
-          const compressedImageData = canvas.toDataURL('image/jpeg', 0.7);
-          const newFace = {
-            id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
-            name: name,
-            room: room,
-            image_data: compressedImageData,
-            face_descriptor: JSON.stringify(Array.from(descriptor)),
-            created_at: new Date().toISOString()
-          };
-          const success = await createFace(newFace);
-          
-          addButton.disabled = false;
-          addButtonText.classList.remove('hidden');
-          addLoading.classList.add('hidden');
-          if (success) {
-            showToast('บันทึกข้อมูลสำเร็จ', 'success');
-            document.getElementById('add-face-form').reset();
-            document.getElementById('preview-container').classList.add('hidden');
-            pendingImageData = null;
-          }
-        };
-        img.onerror = () => {
-          addButton.disabled = false;
-          addButtonText.classList.remove('hidden');
-          addLoading.classList.add('hidden');
-          showToast('ไม่สามารถโหลดรูปภาพได้', 'error');
-        };
-        img.src = pendingImageData;
-      } catch (error) {
-        addButton.disabled = false;
-        addButtonText.classList.remove('hidden');
-        addLoading.classList.add('hidden');
-        showToast('เกิดข้อผิดพลาด: ' + error.message, 'error');
-      }
-    });
-// ... ต่อจากฟังก์ชัน checkLogin() ...
 
-    function logout() {
-        // 1. ปิดหน้าจอ App
-        document.getElementById('app').style.display = 'none';
-        
-        // 2. หยุดกล้องทุกตัว (เพื่อความปลอดภัยและประหยัดทรัพยากร)
-        stopAttendanceCamera();
-        stopRegisterCamera();
+            ROOMS.forEach((room, index) => {
+                const studentsInRoom = storedFaces.filter(face => face.room === room);
+                const studentCount = studentsInRoom.length;
+                
+                const item = document.createElement('div');
+                item.className = 'p-4 flex justify-between items-center hover:bg-gray-50 transition-colors';
+                item.dataset.roomName = room;
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-sm">
+                            ${index + 1}
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-800">${room}</p>
+                            <p class="text-xs text-gray-500">นักศึกษา ${studentCount} คน</p>
+                        </div>
+                    </div>
+                    <button class="delete-room-btn px-3 py-1.5 rounded-lg text-sm text-red-600 bg-red-50 hover:bg-red-100 transition-colors" data-room="${room}" data-student-count="${studentCount}">
+                        <i class="fas fa-trash-alt mr-1"></i> ลบ
+                    </button>
+                `;
+                listContainer.appendChild(item);
+            });
 
-        // 3. รีเซ็ตค่าหน้า Login
-        document.getElementById('admin-password').value = ''; // ล้างช่องรหัสผ่าน
-        document.getElementById('login-error').classList.add('hidden'); // ซ่อนข้อความแจ้งเตือน
+            document.querySelectorAll('.delete-room-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const roomName = e.currentTarget.dataset.room; 
+                    showConfirmDeleteModal(`ต้องการลบระดับชั้น "${roomName}" ใช่หรือไม่?`, async () => {
+                        const success = await deleteRoom(roomName);
+                        if (success) {
+                            showToast(`ลบระดับการศึกษา "${roomName}" สำเร็จ`, 'success');
+                            renderRoomsList();
+                            await fetchFaces();
+                        }
+                    });
+                });
+            });
+            document.getElementById('room-count').textContent = ROOMS.length;
+        }
 
-        // 4. แสดงหน้า Login กลับมา
-        const loginSection = document.getElementById('login-section');
-        loginSection.style.display = 'flex';
-        // ใช้ setTimeout เพื่อให้ Animation การเฟดทำงาน
-        setTimeout(() => {
-            loginSection.style.opacity = '1';
-        }, 50);
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            let bgColor = 'bg-gray-800';
+            if(type === 'success') bgColor = 'bg-emerald-600';
+            if(type === 'error') bgColor = 'bg-red-500';
+            toast.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full text-white shadow-2xl z-50 flex items-center gap-2 toast-enter ${bgColor}`;
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle')}"></i> ${message}`;
+            
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, 20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
 
-        showToast('ออกจากระบบเรียบร้อยแล้ว');
-    }
+        let currentReportData = [];
+        async function loadReport() {
+            const room = document.getElementById('report-room-select').value;
+            const startDate = document.getElementById('report-start-date').value;
+            const endDate = document.getElementById('report-end-date').value;
 
-    // ผูกปุ่ม Logout กับฟังก์ชัน
-    document.getElementById('logout-btn').addEventListener('click', logout);
-   async function init() {
-      // Load models
-      const loaded = await loadModels();
-      if (!loaded) {
-        return;
-      }
+            if (!room) {
+                showToast('กรุณาเลือกระดับการศึกษา', 'error');
+                return;
+            }
 
-      // Load data after everything is ready
-      if (!GAS_URL || GAS_URL === 'null') {
-        showConfigModal();
-      } else {
-        await fetchRooms();
-        await fetchFaces();
-      }
-    }
+            if (!startDate || !endDate) {
+                showToast('กรุณาเลือกวันที่เริ่มต้นและสิ้นสุด', 'error');
+                return;
+            }
 
-    if (typeof faceapi !== 'undefined') {
-      init();
-    } else {
-      window.addEventListener('load', init);
-    }
-  </script>
+            const loadBtn = document.getElementById('load-report-btn');
+            const loadText = document.getElementById('load-report-text');
+            const loadLoading = document.getElementById('load-report-loading');
+            loadBtn.disabled = true;
+            loadText.classList.add('hidden');
+            loadLoading.classList.remove('hidden');
+
+            const attendanceRecords = await fetchAttendanceReport(room, startDate, endDate);
+            
+            loadBtn.disabled = false;
+            loadText.classList.remove('hidden');
+            loadLoading.classList.add('hidden');
+            
+            const studentsInRoom = storedFaces.filter(face => face.room === room);
+            const totalStudents = studentsInRoom.length;
+
+            const attendedStudentIds = new Set(attendanceRecords.map(record => record.student_id));
+            const attendedCount = attendedStudentIds.size;
+            const absentCount = totalStudents - attendedCount;
+
+            document.getElementById('total-students').textContent = totalStudents;
+            document.getElementById('attended-students').textContent = attendedCount;
+            document.getElementById('absent-students').textContent = absentCount;
+            currentReportData = [];
+            const tableBody = document.getElementById('report-table-body');
+            tableBody.innerHTML = '';
+
+            let rowIndex = 1;
+            studentsInRoom.forEach(student => {
+                const studentRecords = attendanceRecords.filter(record => record.student_id === student.id);
+                
+                if (studentRecords.length > 0) {
+                    studentRecords.forEach(record => {
+                        const date = new Date(record.timestamp);
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td class="p-4 text-gray-500">${rowIndex}</td>
+                        <td class="p-4 font-medium">${student.name}</td>
+                        <td class="p-4 text-gray-500">${student.room}</td>
+                        <td class="p-4 text-center">
+                            <span class="px-2 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">มา</span>
+                        </td>
+                        <td class="p-4 text-gray-500">${date.toLocaleDateString('th-TH')} ${date.toLocaleTimeString('th-TH')}</td>
+                        `;
+                        tableBody.appendChild(row);
+                        
+                        currentReportData.push({
+                        no: rowIndex,
+                        name: student.name,
+                        room: student.room,
+                        status: 'มาพบกลุ่ม',
+                        date: date.toLocaleDateString('th-TH'),
+                        time: date.toLocaleTimeString('th-TH')
+                        });
+                        rowIndex++;
+                    });
+                } else {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="p-4 text-gray-500">${rowIndex}</td>
+                        <td class="p-4 font-medium">${student.name}</td>
+                        <td class="p-4 text-gray-500">${student.room}</td>
+                        <td class="p-4 text-center">
+                        <span class="px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">ขาด</span>
+                        </td>
+                        <td class="p-4 text-gray-500">-</td>
+                    `;
+                    tableBody.appendChild(row);
+                    currentReportData.push({
+                        no: rowIndex,
+                        name: student.name,
+                        room: student.room,
+                        status: 'ไม่มาพบกลุ่ม',
+                        date: '-',
+                        time: '-'
+                    });
+                    rowIndex++;
+                }
+            });
+
+            document.getElementById('report-results').classList.remove('hidden');
+            showToast('โหลดรายงานสำเร็จ', 'success');
+        }
+
+        function exportToExcel() {
+            if (currentReportData.length === 0) {
+                showToast('ไม่มีข้อมูลสำหรับส่งออก', 'error');
+                return;
+            }
+
+            const room = document.getElementById('report-room-select').value;
+            const startDate = document.getElementById('report-start-date').value;
+            const endDate = document.getElementById('report-end-date').value;
+            let csv = '\uFEFF';
+            csv += `รายงานการพบกลุ่ม\n`;
+            csv += `ระดับการศึกษา: ${room}\n`;
+            csv += `ช่วงเวลา: ${startDate} ถึง ${endDate}\n`;
+            csv += `นักศึกษาทั้งหมด: ${document.getElementById('total-students').textContent} คน\n`;
+            csv += `มาพบกลุ่ม: ${document.getElementById('attended-students').textContent} คน\n`;
+            csv += `ไม่มาพบกลุ่ม: ${document.getElementById('absent-students').textContent} คน\n\n`;
+            
+            csv += 'ลำดับ,ชื่อ-นามสกุล,ระดับการศึกษา,สถานะ,วันที่,เวลา\n';
+            currentReportData.forEach(row => {
+                csv += `${row.no},"${row.name}","${row.room}","${row.status}","${row.date}","${row.time}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `รายงานการพบกลุ่ม_${room}_${startDate}_${endDate}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast('ส่งออกไฟล์สำเร็จ', 'success');
+        }
+
+        async function deleteAttendanceData() {
+            const room = document.getElementById('report-room-select').value;
+            const startDate = document.getElementById('report-start-date').value;
+            const endDate = document.getElementById('report-end-date').value;
+            
+            if (!room || !startDate || !endDate) {
+                showToast('กรุณาเลือกระดับการศึกษาและช่วงวันที่', 'error');
+                return;
+            }
+
+            showConfirmDeleteModal('ยืนยันการลบประวัติการเข้าเรียนช่วงเวลานี้?', async () => {
+                const deleteBtn = document.getElementById('delete-attendance-btn');
+                deleteBtn.disabled = true;
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                try {
+                    const startTimestamp = new Date(startDate + 'T00:00:00').getTime();
+                    const endTimestamp = new Date(endDate + 'T23:59:59').getTime();
+                    const response = await fetch(GAS_URL, {
+                        method: 'POST',
+                        mode: 'cors',
+                        redirect: 'follow',
+                        headers: {'Content-Type': 'text/plain'},
+                        body: JSON.stringify({
+                            action: 'deleteAttendance',
+                            room: room,
+                            start_timestamp: startTimestamp,
+                            end_timestamp: endTimestamp
+                        })
+                    });
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    const text = await response.text();
+                    let result = JSON.parse(text);
+                    if (result.success) {
+                        showToast(`ลบข้อมูลสำเร็จ (${result.deleted_count || 0} รายการ)`, 'success');
+                        await loadReport();
+                    } else {
+                        throw new Error(result.error);
+                    }
+                } catch (error) {
+                    showToast('ลบข้อมูลไม่สำเร็จ: ' + error.message, 'error');
+                } finally {
+                    deleteBtn.disabled = false;
+                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i> ลบ';
+                }
+            });
+        }
+
+        function switchMainTab(tab) {
+            currentMainTab = tab;
+            const registerSection = document.getElementById('register-section');
+            const attendanceSection = document.getElementById('attendance-section');
+            const reportSection = document.getElementById('report-section');
+            const listSection = document.getElementById('list-section');
+            const roomsSection = document.getElementById('rooms-section');
+            
+            const buttons = {
+                'register': document.getElementById('main-tab-register'),
+                'attendance': document.getElementById('main-tab-attendance'),
+                'report': document.getElementById('main-tab-report'),
+                'list': document.getElementById('main-tab-list'),
+                'rooms': document.getElementById('main-tab-rooms')
+            };
+            
+            [registerSection, attendanceSection, reportSection, listSection, roomsSection].forEach(el => el.classList.add('hidden'));
+            Object.values(buttons).forEach(btn => btn.classList.remove('active'));
+            buttons[tab].classList.add('active');
+            
+            if (tab === 'register') {
+                registerSection.classList.remove('hidden');
+                stopAttendanceCamera();
+            } else if (tab === 'attendance') {
+                attendanceSection.classList.remove('hidden');
+                stopRegisterCamera();
+            } else if (tab === 'report') {
+                reportSection.classList.remove('hidden');
+                stopRegisterCamera();
+                stopAttendanceCamera();
+            } else if (tab === 'list') {
+                listSection.classList.remove('hidden');
+                stopRegisterCamera();
+                stopAttendanceCamera();
+            } else if (tab === 'rooms') {
+                roomsSection.classList.remove('hidden');
+                stopRegisterCamera();
+                stopAttendanceCamera();
+                renderRoomsList();
+            }
+        }
+
+        function switchRegisterTab(tab) {
+            currentRegisterTab = tab;
+            const uploadSection = document.getElementById('register-upload-section');
+            const cameraSection = document.getElementById('register-camera-section');
+            const tabUpload = document.getElementById('register-tab-upload');
+            const tabCamera = document.getElementById('register-tab-camera');
+            if (tab === 'upload') {
+                uploadSection.classList.remove('hidden');
+                cameraSection.classList.add('hidden');
+                
+                tabUpload.classList.add('bg-white', 'text-primary-700', 'shadow-sm');
+                tabUpload.classList.remove('text-gray-500');
+                tabCamera.classList.remove('bg-white', 'text-primary-700', 'shadow-sm');
+                tabCamera.classList.add('text-gray-500');
+                stopRegisterCamera();
+            } else {
+                uploadSection.classList.add('hidden');
+                cameraSection.classList.remove('hidden');
+
+                tabCamera.classList.add('bg-white', 'text-primary-700', 'shadow-sm');
+                tabCamera.classList.remove('text-gray-500');
+                
+                tabUpload.classList.remove('bg-white', 'text-primary-700', 'shadow-sm');
+                tabUpload.classList.add('text-gray-500');
+            }
+        }
+
+        function captureRegisterImage() {
+            const video = document.getElementById('register-camera-video');
+            const canvas = document.getElementById('captured-image-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0);
+            capturedImageData = canvas.toDataURL('image/jpeg', 0.8);
+            canvas.classList.remove('hidden');
+            document.getElementById('save-register-btn').classList.remove('hidden');
+            
+            showToast('ถ่ายภาพสำเร็จ', 'success');
+        }
+
+        async function saveRegisterImage() {
+            const name = document.getElementById('camera-person-name').value.trim();
+            const room = document.getElementById('camera-student-room').value;
+
+            if (!name) {
+                showToast('กรุณากรอกชื่อ-นามสกุล', 'error');
+                return;
+            }
+
+            if (!room) {
+                showToast('กรุณาเลือกระดับการศึกษา', 'error');
+                return;
+            }
+
+            if (!capturedImageData) {
+                showToast('กรุณาถ่ายภาพก่อน', 'error');
+                return;
+            }
+
+            const saveBtn = document.getElementById('save-register-btn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'กำลังบันทึก...';
+            try {
+                const img = new Image();
+                img.onload = async () => {
+                    const descriptor = await extractFaceDescriptor(img);
+                    if (!descriptor) {
+                        showToast('ไม่พบใบหน้าในรูปภาพ กรุณาถ่ายใหม่', 'error');
+                        saveBtn.disabled = false;
+                        saveBtn.textContent = 'บันทึก';
+                        return;
+                    }
+
+                    const newFace = {
+                        id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
+                        name: name,
+                        room: room,
+                        image_data: capturedImageData,
+                        face_descriptor: JSON.stringify(Array.from(descriptor)),
+                        created_at: new Date().toISOString()
+                    };
+                    const success = await createFace(newFace);
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'บันทึก';
+                    if (success) {
+                        showToast('บันทึกข้อมูลสำเร็จ', 'success');
+                        document.getElementById('camera-person-name').value = '';
+                        document.getElementById('camera-student-room').value = '';
+                        document.getElementById('captured-image-canvas').classList.add('hidden');
+                        document.getElementById('save-register-btn').classList.add('hidden');
+                        capturedImageData = null;
+                    }
+                };
+                img.onerror = () => {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'บันทึก';
+                    showToast('ไม่สามารถโหลดรูปภาพได้', 'error');
+                };
+                img.src = capturedImageData;
+            } catch (error) {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'บันทึก';
+                showToast('เกิดข้อผิดพลาด: ' + error.message, 'error');
+            }
+        }
+
+        function stopAttendanceCamera() {
+            if (attendanceCameraStream) {
+                attendanceCameraStream.getTracks().forEach(track => track.stop());
+                attendanceCameraStream = null;
+                const video = document.getElementById('attendance-camera-video');
+                video.srcObject = null;
+                
+                document.getElementById('start-attendance-camera-btn').classList.remove('hidden');
+                document.getElementById('switch-attendance-camera-btn').classList.add('hidden');
+                document.getElementById('stop-attendance-camera-btn').classList.add('hidden');
+                document.getElementById('toggle-sound-btn').classList.add('hidden');
+                
+                stopAttendanceDetection();
+                const canvas = document.getElementById('attendance-camera-canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function startAttendanceDetection() {
+            if (attendanceDetectionInterval) {
+                clearInterval(attendanceDetectionInterval);
+            }
+            
+            attendanceDetectionInterval = setInterval(async () => {
+                await detectAttendanceFaces();
+            }, 500);
+        }
+
+        function stopAttendanceDetection() {
+            if (attendanceDetectionInterval) {
+                clearInterval(attendanceDetectionInterval);
+                attendanceDetectionInterval = null;
+            }
+        }
+
+        async function detectAttendanceFaces() {
+            const video = document.getElementById('attendance-camera-video');
+            const canvas = document.getElementById('attendance-camera-canvas');
+            const ctx = canvas.getContext('2d');
+
+            if (!video.videoWidth || !modelsLoaded || faceDescriptors.length === 0) {
+                return;
+            }
+
+            const roomFaceDescriptors = faceDescriptors.filter(face => face.room === selectedAttendanceRoom);
+            if (roomFaceDescriptors.length === 0) {
+                return;
+            }
+
+            try {
+                const detections = await faceapi
+                    .detectAllFaces(video)
+                    .withFaceLandmarks()
+                    .withFaceDescriptors();
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (detections.length > 0) {
+                    detections.forEach(detection => {
+                        const box = detection.detection.box;
+                        
+                        ctx.strokeStyle = '#10b981';
+                        ctx.lineWidth = 4;
+                        ctx.strokeRect(box.x, box.y, box.width, box.height);
+
+                        let bestMatch = null;
+                        let bestConfidence = 0;
+
+                        for (const storedFace of roomFaceDescriptors) {
+                            const comparison = compareFaces(detection.descriptor, storedFace.descriptor);
+                            if (comparison.match && parseFloat(comparison.confidence) > bestConfidence) {
+                                bestMatch = storedFace;
+                                bestConfidence = parseFloat(comparison.confidence);
+                            }
+                        }
+
+                        if (bestMatch) {
+                            const normalizedConf = getNormalizedConfidence(bestConfidence);
+                            
+                            if (normalizedConf >= 50) {
+                                if (!detectedStudents.has(bestMatch.id)) {
+                                    detectedStudents.set(bestMatch.id, {
+                                        id: bestMatch.id,
+                                        name: bestMatch.name,
+                                        room: bestMatch.room,
+                                        timestamp: new Date().toISOString(),
+                                        confidence: bestConfidence
+                                    });
+                                    updateDetectedList();
+                                }
+
+                                // [ส่วนสำคัญ] ระบบบันทึกอัตโนมัติเมื่อเจอหน้า
+                                if (!autoSavedSet.has(bestMatch.id)) {
+                                    autoSavedSet.add(bestMatch.id);
+                                    speakWelcome(bestMatch.name);
+                                    saveSingleAuto(bestMatch);
+                                }
+                            }
+                            
+                            const label = `${bestMatch.name} (${Math.round(normalizedConf)}%)`;
+                            ctx.font = '600 20px Prompt, sans-serif';
+                            const textMetrics = ctx.measureText(label);
+                            
+                            ctx.fillStyle = '#10b981';
+                            ctx.fillRect(box.x, box.y - 35, textMetrics.width + 20, 30);
+                            
+                            ctx.fillStyle = 'white';
+                            ctx.fillText(label, box.x + 10, box.y - 12);
+                        } else {
+                            ctx.strokeStyle = '#ef4444';
+                            ctx.strokeRect(box.x, box.y, box.width, box.height);
+                        }
+                    });
+                    document.getElementById('attendance-count').innerHTML = `<i class="fas fa-search mr-2"></i>พบ ${detections.length} คน`;
+                } else {
+                    document.getElementById('attendance-count').innerHTML = `<i class="fas fa-search mr-2"></i>รอตรวจจับ...`;
+                }
+            } catch (error) {
+                console.error('Detection error:', error);
+            }
+        }
+
+        function getNormalizedConfidence(confidence) {
+            if (confidence === undefined || confidence === null) return 0;
+            let normalizedConfidence = confidence;
+            if (normalizedConfidence >= 1 && normalizedConfidence <= 100) {
+                return normalizedConfidence;
+            } else if (normalizedConfidence > 0 && normalizedConfidence < 1) {
+                return normalizedConfidence * 100;
+            } else if (normalizedConfidence > 100) {
+                return normalizedConfidence / 100;
+            } 
+            return 0;
+        }
+
+        function updateDetectedList() {
+            const listContainer = document.getElementById('detected-list');
+            listContainer.innerHTML = '';
+
+            if (detectedStudents.size === 0) {
+                listContainer.innerHTML = '<p class="text-center py-8 text-gray-400 text-sm">ยังไม่มีรายชื่อ</p>';
+                document.getElementById('save-attendance-btn').disabled = true;
+                return;
+            }
+
+            detectedStudents.forEach((student, id) => {
+                const item = document.createElement('div');
+                item.className = 'flex justify-between items-center bg-white p-3 rounded-xl shadow-sm border border-gray-100 animate-[slideIn_0.2s_ease-out]';
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-bold text-gray-800 truncate">${student.name}</p>
+                            <p class="text-xs text-gray-500">${new Date(student.timestamp).toLocaleTimeString('th-TH')}</p>
+                        </div>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+            document.getElementById('face-count-detect').textContent = listContainer.children.length;
+            document.getElementById('save-attendance-btn').disabled = (listContainer.children.length === 0);
+        }
+
+        async function saveAttendanceRecord() {
+            if (detectedStudents.size === 0) {
+                showToast('ไม่มีรายชื่อที่ตรวจพบ', 'error');
+                return;
+            }
+
+            const saveBtn = document.getElementById('save-attendance-btn');
+            const saveBtnText = document.getElementById('save-attendance-text');
+            const saveLoading = document.getElementById('save-attendance-loading');
+            saveBtn.disabled = true;
+            saveBtnText.classList.add('hidden');
+            saveLoading.classList.remove('hidden');
+
+            const records = Array.from(detectedStudents.values());
+            const success = await saveAttendance(records);
+
+            saveBtn.disabled = false;
+            saveBtnText.classList.remove('hidden');
+            saveLoading.classList.add('hidden');
+            if (success) {
+                showToast(`บันทึกการพบกลุ่มสำเร็จ (${records.length} คน)`, 'success');
+                detectedStudents.clear();
+                updateDetectedList();
+            }
+        }
+
+        document.getElementById('main-tab-register').addEventListener('click', () => switchMainTab('register'));
+        document.getElementById('main-tab-attendance').addEventListener('click', () => switchMainTab('attendance'));
+        document.getElementById('main-tab-report').addEventListener('click', () => switchMainTab('report'));
+        document.getElementById('main-tab-list').addEventListener('click', () => switchMainTab('list'));
+        document.getElementById('main-tab-rooms').addEventListener('click', () => switchMainTab('rooms'));
+
+        document.getElementById('load-report-btn').addEventListener('click', loadReport);
+        document.getElementById('export-excel-btn').addEventListener('click', exportToExcel);
+        document.getElementById('delete-attendance-btn').addEventListener('click', deleteAttendanceData);
+
+        document.getElementById('register-tab-upload').addEventListener('click', () => switchRegisterTab('upload'));
+        document.getElementById('register-tab-camera').addEventListener('click', () => switchRegisterTab('camera'));
+
+        document.getElementById('start-register-camera-btn').addEventListener('click', startRegisterCamera);
+        document.getElementById('switch-register-camera-btn').addEventListener('click', switchRegisterCamera);
+        document.getElementById('capture-register-btn').addEventListener('click', captureRegisterImage);
+        document.getElementById('save-register-btn').addEventListener('click', saveRegisterImage);
+
+        document.getElementById('start-attendance-camera-btn').addEventListener('click', startAttendanceCamera);
+        document.getElementById('switch-attendance-camera-btn').addEventListener('click', switchAttendanceCamera);
+        document.getElementById('stop-attendance-camera-btn').addEventListener('click', stopAttendanceCamera);
+        document.getElementById('save-attendance-btn').addEventListener('click', saveAttendanceRecord);
+
+        const soundBtn = document.getElementById('toggle-sound-btn');
+        soundBtn.addEventListener('click', () => {
+            isSoundEnabled = !isSoundEnabled;
+            if (isSoundEnabled) {
+                soundBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                soundBtn.classList.remove('bg-gray-500');
+                soundBtn.classList.add('bg-blue-500');
+            } else {
+                soundBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                soundBtn.classList.remove('bg-blue-500');
+                soundBtn.classList.add('bg-gray-500');
+                window.speechSynthesis.cancel(); 
+            }
+        });
+
+        document.getElementById('attendance-room-select').addEventListener('change', (e) => {
+            selectedAttendanceRoom = e.target.value;
+            // [จุดแก้ไข] ล้างค่าคนทีเคยบันทึกอัตโนมัติไปแล้วเมื่อเปลี่ยนห้อง
+            autoSavedSet.clear(); 
+            
+            if (selectedAttendanceRoom) {
+                document.getElementById('attendance-camera-section').classList.remove('hidden');
+                detectedStudents.clear();
+                updateDetectedList();
+                stopAttendanceCamera();
+            } else {
+                document.getElementById('attendance-camera-section').classList.add('hidden');
+                stopAttendanceCamera();
+            }
+        });
+
+        document.getElementById('list-room-filter').addEventListener('change', (e) => {
+            selectedListRoomFilter = e.target.value;
+            renderFacesList();
+            updateFaceCount();
+        });
+
+        document.getElementById('add-room-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const roomName = document.getElementById('new-room-name').value.trim();
+            if (!roomName) {
+                showToast('กรุณากรอกชื่อระดับการศึกษา', 'error');
+                return;
+            }
+            if (ROOMS.includes(roomName)) {
+                showToast('ระดับการศึกษานี้มีอยู่แล้ว', 'error');
+                return;
+            }
+            const addRoomButton = document.getElementById('add-room-button');
+            const addRoomButtonText = document.getElementById('add-room-button-text');
+            const addRoomLoading = document.getElementById('add-room-loading');
+            
+            addRoomButton.disabled = true;
+            addRoomButtonText.classList.add('hidden');
+            addRoomLoading.classList.remove('hidden');
+
+            const success = await createRoom(roomName);
+            
+            addRoomButton.disabled = false;
+            addRoomButtonText.classList.remove('hidden');
+            addRoomLoading.classList.add('hidden');
+            if (success) {
+                showToast('เพิ่มระดับการศึกษาสำเร็จ', 'success');
+                document.getElementById('add-room-form').reset();
+                renderRoomsList();
+            }
+        });
+
+        document.getElementById('face-image').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                pendingImageData = event.target.result;
+                document.getElementById('image-preview').src = pendingImageData;
+                document.getElementById('preview-container').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('add-face-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('person-name').value.trim();
+            const room = document.getElementById('student-room').value;
+
+            if (!name) {
+                showToast('กรุณากรอกชื่อ-นามสกุล', 'error');
+                return;
+            }
+
+            if (!room) {
+                showToast('กรุณาเลือกระดับการศึกษา', 'error');
+                return;
+            }
+
+            if (!pendingImageData) {
+                showToast('กรุณาเลือกรูปภาพ', 'error');
+                return;
+            }
+
+            const addButton = document.getElementById('add-button');
+            const addButtonText = document.getElementById('add-button-text');
+            const addLoading = document.getElementById('add-loading');
+            
+            addButton.disabled = true;
+            addButtonText.classList.add('hidden');
+            addLoading.classList.remove('hidden');
+
+            try {
+                const img = new Image();
+                img.onload = async () => {
+                    const descriptor = await extractFaceDescriptor(img);
+                    if (!descriptor) {
+                        showToast('ไม่พบใบหน้าในรูปภาพ กรุณาเลือกรูปที่มีใบหน้าชัดเจน', 'error');
+                        addButton.disabled = false;
+                        addButtonText.classList.remove('hidden');
+                        addLoading.classList.add('hidden');
+                        return;
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    const maxWidth = 400;
+                    const maxHeight = 400;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height) {
+                        if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const compressedImageData = canvas.toDataURL('image/jpeg', 0.7);
+                    const newFace = {
+                        id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
+                        name: name,
+                        room: room,
+                        image_data: compressedImageData,
+                        face_descriptor: JSON.stringify(Array.from(descriptor)),
+                        created_at: new Date().toISOString()
+                    };
+                    const success = await createFace(newFace);
+                    
+                    addButton.disabled = false;
+                    addButtonText.classList.remove('hidden');
+                    addLoading.classList.add('hidden');
+                    if (success) {
+                        showToast('บันทึกข้อมูลสำเร็จ', 'success');
+                        document.getElementById('add-face-form').reset();
+                        document.getElementById('preview-container').classList.add('hidden');
+                        pendingImageData = null;
+                    }
+                };
+                img.onerror = () => {
+                    addButton.disabled = false;
+                    addButtonText.classList.remove('hidden');
+                    addLoading.classList.add('hidden');
+                    showToast('ไม่สามารถโหลดรูปภาพได้', 'error');
+                };
+                img.src = pendingImageData;
+            } catch (error) {
+                addButton.disabled = false;
+                addButtonText.classList.remove('hidden');
+                addLoading.classList.add('hidden');
+                showToast('เกิดข้อผิดพลาด: ' + error.message, 'error');
+            }
+        });
+
+        function logout() {
+            document.getElementById('app').style.display = 'none';
+            stopAttendanceCamera();
+            stopRegisterCamera();
+            document.getElementById('admin-password').value = '';
+            document.getElementById('login-error').classList.add('hidden');
+            const loginSection = document.getElementById('login-section');
+            loginSection.style.display = 'flex';
+            setTimeout(() => {
+                loginSection.style.opacity = '1';
+            }, 50);
+            showToast('ออกจากระบบเรียบร้อยแล้ว');
+        }
+
+        document.getElementById('logout-btn').addEventListener('click', logout);
+
+        async function init() {
+            const loaded = await loadModels();
+            if (!loaded) {
+                return;
+            }
+            if (!GAS_URL || GAS_URL === 'null') {
+                showConfigModal();
+            } else {
+                await fetchRooms();
+                await fetchFaces();
+            }
+        }
+
+        if (typeof faceapi !== 'undefined') {
+            init();
+        } else {
+            window.addEventListener('load', init);
+        }
+    </script>
 </body>
 </html>
